@@ -25,7 +25,7 @@ fn get_readme(path: PathBuf) -> Result<Option<String>, std::io::Error> {
     Ok(None)
 }
 
-pub fn get_dirs(settings: Settings) -> Result<Vec<DirItem>, std::io::Error> {
+pub fn get_dirs(settings: &Settings) -> Result<Vec<DirItem>, std::io::Error> {
     let mut items = Vec::new();
     for dir in settings.search_dirs.iter() {
         let dir = shellexpand::tilde(dir);

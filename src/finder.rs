@@ -1,8 +1,20 @@
 use crate::dirs::DirItem;
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
-
 use std::{borrow::Cow, path::PathBuf, sync::Arc};
+use std::{env, fs};
+
+fn is_program_in_path(program: &str) -> bool {
+    if let Ok(path) = env::var("PATH") {
+        for p in path.split(":") {
+            let p_str = format!("{}/{}", p, program);
+            if fs::metadata(p_str).is_ok() {
+                return true;
+            }
+        }
+    }
+    false
+}
 
 impl SkimItem for DirItem {
     fn text(&self) -> std::borrow::Cow<str> {
@@ -21,6 +33,26 @@ impl SkimItem for DirItem {
         let dir_name = dir_name.unwrap();
         Cow::from(dir_name.to_string())
     }
+
+    fn preview(&self, _context: PreviewContext) -> ItemPreview {
+        if self.readme.is_none() {
+            return ItemPreview::Command(format!("ls {}", self.path));
+        }
+
+        let mut readme_path = PathBuf::new();
+        readme_path.push(self.path.to_string());
+        readme_path.push(self.readme.clone().unwrap());
+        let readme_path = readme_path.to_str();
+        if readme_path.is_none() {
+            return ItemPreview::Command(format!("ls {}", self.path));
+        }
+        let readme_path = readme_path.unwrap();
+        if is_program_in_path("bat") {
+            ItemPreview::Command(format!("bat --style=plain --color=always {}", readme_path))
+        } else {
+            ItemPreview::Command(format!("cat {}", readme_path))
+        }
+    }
 }
 
 fn receiver(items: &[DirItem]) -> SkimItemReceiver {
@@ -32,9 +64,10 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
     rx_items
 }
 
-pub fn find(items: &[DirItem]) {
+pub fn find(items: &[DirItem], preview: bool) {
     let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
+        .preview(if preview { Some("") } else { None })
         .multi(false)
         .build()
         .unwrap();
@@ -42,17 +75,21 @@ pub fn find(items: &[DirItem]) {
     let receiver = receiver(items);
 
     let _ = Skim::run_with(&skim_options, Some(receiver)).map(|out| {
-        if out.final_key != Key::Enter {
-            return;
-        }
-
         let selected = out.selected_items.first();
-        match selected {
+        let selected = match selected {
             Some(item) => {
                 let selected_dir = (**item).as_any().downcast_ref::<DirItem>().unwrap();
-                println!("{:?}", selected_dir);
+                Some(selected_dir)
             }
-            None => {}
+            None => None,
+        };
+
+        match out.final_key {
+            Key::Enter => {
+                // TODO cd to dir
+                println!("{:?}", selected);
+            }
+            _ => {}
         }
     });
 }
