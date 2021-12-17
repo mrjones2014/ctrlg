@@ -1,10 +1,10 @@
 use crate::settings::Settings;
 use std::{fs, path::PathBuf};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct DirItem {
-    path: String,
-    readme: Option<String>,
+    pub path: String,
+    pub readme: Option<String>,
 }
 
 fn get_readme(path: PathBuf) -> Result<Option<String>, std::io::Error> {
