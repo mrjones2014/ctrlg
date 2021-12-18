@@ -8,6 +8,6 @@ mod settings;
 fn main() -> Result<(), Box<dyn Error>> {
     let settings = Settings::new()?;
     let dirs = get_dirs(&settings)?;
-    finder::find(&dirs, settings.preview == true);
+    finder::find(&dirs, settings.preview);
     Ok(())
 }
