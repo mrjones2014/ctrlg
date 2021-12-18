@@ -64,7 +64,7 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
     rx_items
 }
 
-pub fn find(items: &[DirItem], preview: bool) {
+pub fn find(items: &[DirItem], preview: bool) -> Option<String> {
     let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
         .preview(if preview { Some("") } else { None })
@@ -74,27 +74,26 @@ pub fn find(items: &[DirItem], preview: bool) {
 
     let receiver = receiver(items);
 
-    let _ = Skim::run_with(&skim_options, Some(receiver)).map(|out| {
-        let selected = out.selected_items.first();
-        let selected = match selected {
-            Some(item) => {
-                let selected_dir = (**item).as_any().downcast_ref::<DirItem>().unwrap();
-                Some(selected_dir)
+    Skim::run_with(&skim_options, Some(receiver))
+        .map(|out| {
+            let selected = out.selected_items.first();
+            let selected = match selected {
+                Some(item) => {
+                    let selected_dir = (**item).as_any().downcast_ref::<DirItem>().unwrap();
+                    Some(selected_dir)
+                }
+                None => None,
+            };
+
+            selected?;
+
+            let selected = selected.unwrap();
+
+            if out.final_key == Key::Enter {
+                return Some(selected.path.to_string());
             }
-            None => None,
-        };
 
-        if selected.is_none() {
-            return;
-        }
-
-        let selected = selected.unwrap();
-
-        match out.final_key {
-            Key::Enter => {
-                println!("{:?}", selected.path);
-            }
-            _ => {}
-        }
-    });
+            None
+        })
+        .flatten()
 }
