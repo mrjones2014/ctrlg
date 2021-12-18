@@ -84,10 +84,15 @@ pub fn find(items: &[DirItem], preview: bool) {
             None => None,
         };
 
+        if selected.is_none() {
+            return;
+        }
+
+        let selected = selected.unwrap();
+
         match out.final_key {
             Key::Enter => {
-                // TODO cd to dir
-                println!("{:?}", selected);
+                println!("{:?}", selected.path);
             }
             _ => {}
         }
