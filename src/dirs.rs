@@ -1,7 +1,6 @@
-use glob::{glob, GlobError};
-
 use crate::settings::Settings;
-use std::{error::Error, fmt::Display, fs, io, path::PathBuf};
+use glob::{glob, GlobError};
+use std::{error::Error, fmt::Display, io, path::PathBuf};
 
 #[derive(Debug, Clone)]
 pub struct DirItem {
@@ -9,21 +8,27 @@ pub struct DirItem {
     pub readme: Option<String>,
 }
 
-fn get_readme(path: PathBuf) -> Result<Option<String>, io::Error> {
-    let files = fs::read_dir(path)?;
-    for file in files {
-        let file = file?;
-        let os_file_name = file.file_name();
-        let name = os_file_name.to_str();
-        if name.is_none() {
-            continue;
-        }
-
-        if name.unwrap().starts_with("README") {
-            return Ok(Some(name.unwrap().to_string()));
+fn get_readme(path: PathBuf, settings: &Settings) -> Result<Option<String>, io::Error> {
+    for glob_pattern in settings.preview_files.iter() {
+        let mut preview_file_pattern = path.clone();
+        preview_file_pattern.push(glob_pattern);
+        let preview_file_pattern = preview_file_pattern
+            .to_str()
+            .expect("Failed to expand preview file path");
+        for matched_preview_file in
+            glob(preview_file_pattern).expect("Failed to expand preview file globbing pattern")
+        {
+            if matched_preview_file.is_ok() {
+                return Ok(Some(
+                    matched_preview_file
+                        .unwrap()
+                        .to_str()
+                        .expect("Failed to expand preview file path")
+                        .to_string(),
+                ));
+            }
         }
     }
-
     Ok(None)
 }
 
@@ -65,7 +70,7 @@ pub fn get_dirs(settings: &Settings) -> Result<Vec<DirItem>, GetDirsError> {
             if path.is_dir() {
                 items.push(DirItem {
                     path: path.to_str().unwrap().to_string(),
-                    readme: get_readme(path)?,
+                    readme: get_readme(path, settings)?,
                 });
             }
         }

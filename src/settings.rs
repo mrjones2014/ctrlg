@@ -7,6 +7,7 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct Settings {
     pub search_dirs: Vec<String>,
+    pub preview_files: Vec<String>,
     pub preview: bool,
 }
 
@@ -15,6 +16,7 @@ impl Settings {
         let mut s = Config::default();
 
         s.set_default("search_dirs", vec!["~/git"])?;
+        s.set_default("preview_files", vec!["README.*"])?;
         s.set_default("preview", true)?;
 
         let home = home_dir();
