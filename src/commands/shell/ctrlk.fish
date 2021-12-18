@@ -10,19 +10,26 @@ function _ctrlk_tmux_send_all_panes
             if [ "$pane" = "$current_pane" ]
                 eval "$argv"
             else
-                tmux send-keys -t "$pane" "$cmd" Enter
+                tmux send-keys -t "$pane" "$argv" Enter
             end
         end
     end
 end
 
 function _ctrlk_search_and_go
-    set -l ctrlk_selected_dir (ctrlk go)
+    set ctrlk_selected_dir (ctrlk find)
     if test -n "$ctrlk_selected_dir"
-        if [ "$CTRLK_TMUX" = true ] || [ "$CTRLK_TMUX" = true ]
-            _ctrlk_tmux_send_all_panes "cd $ctrlk_selected_dir"
+        if test -n "$CTRLK_TMUX"
+            if test -z "$CTRLK_NOCLEAR"
+                _ctrlk_tmux_send_all_panes "cd $ctrlk_selected_dir; clear"
+            else
+                _ctrlk_tmux_send_all_panes "cd $ctrlk_selected_dir"
+            end
         else
             cd "$ctrlk_selected_dir"
+            if test -z "$CTRLK_NOCLEAR"
+                clear
+            end
         end
     end
 end
