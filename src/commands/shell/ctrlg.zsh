@@ -3,7 +3,7 @@
 # Send a single command to all panes without
 # having to toggle on and off the
 # synchronize-panes option manually
-function _ctrlg_tmux_sfi_all_panes() {
+function _ctrlg_tmux_send_all_panes() {
   if test -z "$TMUX"; then
     eval "$1"
   else
@@ -22,7 +22,7 @@ function _ctrlg_search_and_go() {
   local ctrlg_selected_dir="$(ctrlg find)"
   if test -n "$ctrlg_selected_dir"; then
     if test -n "$CTRLG_TMUX"; then
-      _ctrlg_tmux_sfi_all_panes "cd $ctrlg_selected_dir || exit; zle reset-prompt"
+      _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir || exit; zle reset-prompt"
     else
       cd "$ctrlg_selected_dir" || exit
       echo "resetting"
