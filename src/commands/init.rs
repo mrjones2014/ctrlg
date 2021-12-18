@@ -6,6 +6,8 @@ pub enum Cmd {
     Fish,
     #[structopt(about = "Set up ctrl+g keybind for Bash")]
     Bash,
+    #[structopt(about = "Set up ctrl+g keybind for Zsh")]
+    Zsh,
 }
 
 impl Cmd {
@@ -17,6 +19,10 @@ impl Cmd {
             }
             Cmd::Bash => {
                 let script = include_str!("./shell/ctrlg.bash");
+                println!("{}", script);
+            }
+            Cmd::Zsh => {
+                let script = include_str!("./shell/ctrlg.zsh");
                 println!("{}", script);
             }
         }
