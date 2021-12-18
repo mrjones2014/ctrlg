@@ -18,7 +18,6 @@ end
 
 function _ctrlg_search_and_go
     set -l ctrlg_selected_dir (ctrlg find)
-    echo $ctrlg_selected_dir
     if test -n "$ctrlg_selected_dir"
         if test -n "$ctrlg_TMUX"
             if test -z "$CTRLG_NOCLEAR"
@@ -37,5 +36,4 @@ end
 
 if test -z "$CTRLG_NOBIND"
     bind \a _ctrlg_search_and_go
-    echo bound
 end
