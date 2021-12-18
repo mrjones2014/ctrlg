@@ -225,7 +225,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ctrlk"
+name = "ctrlg"
 version = "0.1.0"
 dependencies = [
  "config",

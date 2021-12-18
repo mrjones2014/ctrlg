@@ -4,18 +4,18 @@ use std::error::Error;
 use structopt::StructOpt;
 
 #[derive(StructOpt)]
-pub enum CtrlkCommand {
+pub enum CtrlgCommand {
     #[structopt(about = "Find a directory based on configured globbing patterns")]
     Find,
     #[structopt(about = "Set up ctrl+k keybind for specified shell")]
     Init(init::Cmd),
 }
 
-impl CtrlkCommand {
+impl CtrlgCommand {
     pub fn run(self) -> Result<(), Box<dyn Error>> {
         let settings = Settings::new()?;
         match self {
-            CtrlkCommand::Find => {
+            CtrlgCommand::Find => {
                 let dirs = get_dirs(&settings)?;
                 let selected = find(&dirs, settings.preview);
                 if let Some(selected) = selected {
@@ -23,7 +23,7 @@ impl CtrlkCommand {
                 }
                 Ok(())
             }
-            CtrlkCommand::Init(cmd) => {
+            CtrlgCommand::Init(cmd) => {
                 cmd.run();
                 Ok(())
             }

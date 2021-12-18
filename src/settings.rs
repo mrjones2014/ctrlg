@@ -29,7 +29,7 @@ impl Settings {
         let user_config_path: PathBuf = [
             home.to_str().expect("Failed to determine config directory"),
             ".config",
-            "ctrlk",
+            "ctrlg",
             "config.yml",
         ]
         .iter()

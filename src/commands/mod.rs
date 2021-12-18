@@ -1,2 +1,2 @@
-pub mod ctrlkcommand;
+pub mod ctrlgcommand;
 pub mod init;

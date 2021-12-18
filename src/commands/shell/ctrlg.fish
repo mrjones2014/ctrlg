@@ -1,7 +1,7 @@
 # Send a single command to all panes without
 # having to toggle on and off the
 # synchronize-panes option manually
-function _ctrlk_tmux_send_all_panes
+function _ctrlg_tmux_send_all_panes
     if test -z "$TMUX"
         eval "$argv"
     else
@@ -16,24 +16,26 @@ function _ctrlk_tmux_send_all_panes
     end
 end
 
-function _ctrlk_search_and_go
-    set ctrlk_selected_dir (ctrlk find)
-    if test -n "$ctrlk_selected_dir"
-        if test -n "$CTRLK_TMUX"
-            if test -z "$CTRLK_NOCLEAR"
-                _ctrlk_tmux_send_all_panes "cd $ctrlk_selected_dir; clear"
+function _ctrlg_search_and_go
+    set -l ctrlg_selected_dir (ctrlg find)
+    echo $ctrlg_selected_dir
+    if test -n "$ctrlg_selected_dir"
+        if test -n "$ctrlg_TMUX"
+            if test -z "$CTRLG_NOCLEAR"
+                _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir; clear"
             else
-                _ctrlk_tmux_send_all_panes "cd $ctrlk_selected_dir"
+                _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir"
             end
         else
-            cd "$ctrlk_selected_dir"
-            if test -z "$CTRLK_NOCLEAR"
+            cd "$ctrlg_selected_dir" || exit
+            if test -z "$CTRLG_NOCLEAR"
                 clear
             end
         end
     end
 end
 
-if test -z "$CTRLK_NOBIND"
-    bind \ck _ctrlk_search_and_go
+if test -z "$CTRLG_NOBIND"
+    bind \a _ctrlg_search_and_go
+    echo bound
 end

@@ -1,4 +1,4 @@
-use commands::ctrlkcommand::CtrlkCommand;
+use commands::ctrlgcommand::CtrlgCommand;
 use std::error::Error;
 use structopt::{clap::AppSettings, StructOpt};
 
@@ -16,18 +16,18 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
     about = "Press ctrl+k to search and jump to any directory",
     global_settings(&[AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder])
 )]
-struct Ctrlk {
+struct Ctrlg {
     #[structopt(subcommand)]
-    ctrlk: CtrlkCommand,
+    ctrlg: CtrlgCommand,
 }
 
-impl Ctrlk {
+impl Ctrlg {
     fn run(self) -> Result<(), Box<dyn Error>> {
-        self.ctrlk.run()
+        self.ctrlg.run()
     }
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    Ctrlk::from_args().run()?;
+    Ctrlg::from_args().run()?;
     Ok(())
 }

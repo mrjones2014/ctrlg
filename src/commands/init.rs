@@ -10,7 +10,7 @@ impl Cmd {
     pub fn run(&self) {
         match self {
             Cmd::Fish => {
-                let script = include_str!("./shell/ctrlk.fish");
+                let script = include_str!("./shell/ctrlg.fish");
                 println!("{}", script);
             }
         }
