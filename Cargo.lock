@@ -225,6 +225,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "ctrlk"
+version = "0.1.0"
+dependencies = [
+ "config",
+ "dirs-next",
+ "glob",
+ "serde 1.0.132",
+ "shellexpand",
+ "skim",
+]
+
+[[package]]
 name = "darling"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -334,18 +346,6 @@ dependencies = [
  "libc",
  "redox_users",
  "winapi",
-]
-
-[[package]]
-name = "dirswitch"
-version = "0.1.0"
-dependencies = [
- "config",
- "dirs-next",
- "glob",
- "serde 1.0.132",
- "shellexpand",
- "skim",
 ]
 
 [[package]]
