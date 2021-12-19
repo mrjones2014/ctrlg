@@ -5,7 +5,7 @@ If enabled, `ctrlg` can `cd` all split panes in the current window of a `tmux` s
 to the selected directory. Press <kbd>ctrl</kbd> + <kbd>g</kbd> to fuzzy find directories,
 configured by globbing patterns.
 
-![demo](https://github.com/mrjones2014/ctrlg/blob/master/demo.gif)
+![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
 
 ## Install
 
