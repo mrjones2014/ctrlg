@@ -24,6 +24,13 @@ impl SkimItem for DirItem {
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
         if self.readme.is_none() {
+            if Settings::get_readonly().preview_fallback_exa {
+                return ItemPreview::Command(format!(
+                    "exa --icons --color=always -s type -F \"{}\"",
+                    self.path
+                ));
+            }
+
             return ItemPreview::Command(format!("ls \"{}\"", self.path));
         }
 

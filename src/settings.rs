@@ -10,12 +10,13 @@ pub struct Settings {
     pub preview_files: Vec<String>,
     pub preview: bool,
     pub preview_with_bat: bool,
+    pub preview_fallback_exa: bool,
 }
 
-fn is_bat_installed() -> bool {
+fn is_program_in_path(program: &str) -> bool {
     if let Ok(path) = env::var("PATH") {
         for p in path.split(":") {
-            let p_str = format!("{}/{}", p, "bat");
+            let p_str = format!("{}/{}", p, program);
             if fs::metadata(p_str).is_ok() {
                 return true;
             }
@@ -31,7 +32,8 @@ impl Settings {
         s.set_default("search_dirs", vec!["~/git/*"])?;
         s.set_default("preview_files", vec!["README.*"])?;
         s.set_default("preview", true)?;
-        s.set_default("preview_with_bat", is_bat_installed())?;
+        s.set_default("preview_with_bat", is_program_in_path("bat"))?;
+        s.set_default("preview_fallback_exa", is_program_in_path("exa"))?;
 
         let home = home_dir();
         if home.is_none() {
