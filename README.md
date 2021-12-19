@@ -43,7 +43,7 @@ window, set the environment variable `CTRLG_TMUX` to `true`.
 `ctrlg` will look for a configuration file at `~/.config/ctrlg/config.yml`. The default
 configuration is shown below:
 
-```
+```yaml
 # configure what directories to list in the fuzzy finder
 # can be any list of globbing patterns, will only show directories
 # not files
