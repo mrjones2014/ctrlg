@@ -27,9 +27,6 @@ impl SkimItem for DirItem {
             return ItemPreview::Command(format!("ls {}", self.path));
         }
 
-        if self.readme.is_none() {
-            return ItemPreview::Command(format!("ls {}", self.path));
-        }
         let readme_path = self.readme.as_ref().unwrap();
         if SETTINGS.preview_with_bat {
             ItemPreview::Command(format!("bat --style=plain --color=always {}", readme_path))
