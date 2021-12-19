@@ -1,9 +1,11 @@
 use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
 use serde::Deserialize;
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::Mutex};
 
-#[derive(Deserialize)]
+use crate::commands::find;
+
+#[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
     pub search_dirs: Vec<String>,
     pub preview_files: Vec<String>,
@@ -41,8 +43,35 @@ impl Settings {
 
         s.try_into()
     }
+
+    pub fn merge_find_args(find_args: &find::Cmd) {
+        let mut settings_mut = SETTINGS.lock().unwrap();
+
+        if let Some(search_dirs) = &find_args.search_dirs {
+            settings_mut.search_dirs = search_dirs.clone();
+        }
+
+        if let Some(preview_files) = &find_args.preview_files {
+            settings_mut.preview_files = preview_files.clone();
+        }
+
+        if let Some(preview) = find_args.preview {
+            settings_mut.preview = preview;
+        }
+
+        if let Some(preview_with_bat) = find_args.preview_with_bat {
+            settings_mut.preview_with_bat = preview_with_bat;
+        }
+    }
+
+    pub fn get_readonly() -> Self {
+        let settings_lock = SETTINGS.lock().unwrap();
+        let settings = settings_lock.clone();
+        drop(settings_lock);
+        settings
+    }
 }
 
 lazy_static! {
-    pub static ref SETTINGS: Settings = Settings::new().unwrap();
+    pub static ref SETTINGS: Mutex<Settings> = Mutex::from(Settings::new().unwrap());
 }

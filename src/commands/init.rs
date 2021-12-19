@@ -11,20 +11,12 @@ pub enum Cmd {
 }
 
 impl Cmd {
-    pub fn run(&self) {
+    pub fn run(&self) -> String {
         match self {
-            Cmd::Fish => {
-                let script = include_str!("./shell/ctrlg.fish");
-                println!("{}", script);
-            }
-            Cmd::Bash => {
-                let script = include_str!("./shell/ctrlg.bash");
-                println!("{}", script);
-            }
-            Cmd::Zsh => {
-                let script = include_str!("./shell/ctrlg.zsh");
-                println!("{}", script);
-            }
+            Cmd::Fish => include_str!("./shell/ctrlg.fish"),
+            Cmd::Bash => include_str!("./shell/ctrlg.bash"),
+            Cmd::Zsh => include_str!("./shell/ctrlg.zsh"),
         }
+        .to_string()
     }
 }

@@ -1,5 +1,5 @@
 use crate::dirs::DirItem;
-use crate::settings::SETTINGS;
+use crate::settings::{Settings, SETTINGS};
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
 use std::{borrow::Cow, path::PathBuf, sync::Arc};
@@ -28,7 +28,7 @@ impl SkimItem for DirItem {
         }
 
         let readme_path = self.readme.as_ref().unwrap();
-        if SETTINGS.preview_with_bat {
+        if SETTINGS.lock().unwrap().preview_with_bat {
             ItemPreview::Command(format!(
                 "bat --style=plain --color=always \"{}\"",
                 readme_path
@@ -51,7 +51,11 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
 pub fn find(items: &[DirItem]) -> Option<String> {
     let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
-        .preview(if SETTINGS.preview { Some("") } else { None })
+        .preview(if Settings::get_readonly().preview {
+            Some("")
+        } else {
+            None
+        })
         .multi(false)
         .build()
         .unwrap();
