@@ -1,10 +1,10 @@
 # CtrlG - A Command Line Context Switcher
 
-![demo](./demo.gif)
-
 CtrlG is a tool to quickly switch contexts to another directory, using a fuzzy finder.
 If enabled, `ctrlg` can `cd` all split panes in the current window of a `tmux` session
 to the selected directory.
+
+![demo](./demo.gif)
 
 ## Install
 
