@@ -10,7 +10,7 @@ function _ctrlg_tmux_send_all_panes
             if [ "$pane" = "$current_pane" ]
                 eval "$argv"
             else
-                tmux send-keys -t "$pane" "$argv" Enter
+                tmux send-keys -t "$pane" "  $argv" Enter
             end
         end
     end

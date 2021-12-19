@@ -12,7 +12,7 @@ function _ctrlg_tmux_send_all_panes() {
       if [ "$pane" = "$current_pane" ]; then
         eval "$1"
       else
-        tmux send-keys -t "$pane" "$1" Enter
+        tmux send-keys -t "$pane" "  $1" Enter
       fi
     done
   fi
