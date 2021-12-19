@@ -65,7 +65,7 @@ configuration is shown below:
 # can be any list of globbing patterns, will only show directories
 # not files
 search_dirs:
-  - "~/.git/*"
+  - "~/git/*"
 # configure what files to check for to show in the preview window
 # of the fuzzy finder. Previews will use `cat` by default.
 preview_files:
