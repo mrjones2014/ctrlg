@@ -35,7 +35,7 @@ echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ### Fish
 
 ```
-echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish`
+echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish
 ```
 
 ## Tmux Integration
@@ -46,13 +46,13 @@ window, set the environment variable `CTRLG_TMUX` to `true`.
 ### Bash/Zsh
 
 ```
-export CTRLG_TMUX=true`
+export CTRLG_TMUX=true
 ```
 
 ### Fish
 
 ```
-set -U CTRLG_TMUX true`
+set -U CTRLG_TMUX true
 ```
 
 ## Configuration
@@ -65,7 +65,7 @@ configuration is shown below:
 # can be any list of globbing patterns, will only show directories
 # not files
 search_dirs:
-  - "~/.git/*"
+  - "~/git/*"
 # configure what files to check for to show in the preview window
 # of the fuzzy finder. Previews will use `cat` by default.
 preview_files:
