@@ -1,0 +1,23 @@
+# Basic compile check to run on every push to master and every PR to master
+name: Build Rust
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+    - uses: actions-rs/cargo@v1
+      with:
+        command: clippy
+    - uses: actions-rs/cargo@v1
+      with:
+        command: build
+        args: --release
