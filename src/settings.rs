@@ -15,7 +15,7 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::default();
 
-        s.set_default("search_dirs", vec!["~/git"])?;
+        s.set_default("search_dirs", vec!["~/git/*"])?;
         s.set_default("preview_files", vec!["README.*"])?;
         s.set_default("preview", true)?;
 

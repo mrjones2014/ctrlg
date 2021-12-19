@@ -7,7 +7,7 @@ use structopt::StructOpt;
 pub enum CtrlgCommand {
     #[structopt(about = "Find a directory based on configured globbing patterns")]
     Find,
-    #[structopt(about = "Set up ctrl+k keybind for specified shell")]
+    #[structopt(about = "Set up ctrl+g keybind for specified shell")]
     Init(init::Cmd),
 }
 

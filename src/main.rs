@@ -13,7 +13,7 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
 #[structopt(
     author = "Mat Jones <mat@mjones.network>",
     version = VERSION,
-    about = "Press ctrl+k to search and jump to any directory",
+    about = "Press ctrl+g to search and jump to any directory",
     global_settings(&[AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder])
 )]
 struct Ctrlg {
