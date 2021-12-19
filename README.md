@@ -7,6 +7,7 @@ to the selected directory.
 ## Install
 
 // TODO publish to cargo
+
 Build from source using `cargo install --path .`.
 
 Once the CLI is installed, you will need to set up the key binding depending on your shell.
