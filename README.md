@@ -2,7 +2,8 @@
 
 CtrlG is a tool to quickly switch contexts to another directory, using a fuzzy finder.
 If enabled, `ctrlg` can `cd` all split panes in the current window of a `tmux` session
-to the selected directory.
+to the selected directory. Press <kbd>ctrl</kbd> + <kbd>g</kbd> to fuzzy find directories,
+configured by globbing patterns.
 
 ![demo](./demo.gif)
 
