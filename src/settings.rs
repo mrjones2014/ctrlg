@@ -1,6 +1,5 @@
 use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
-use lazy_static;
 use serde::Deserialize;
 use std::path::PathBuf;
 

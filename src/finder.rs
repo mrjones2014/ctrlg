@@ -3,19 +3,6 @@ use crate::settings::SETTINGS;
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
 use std::{borrow::Cow, path::PathBuf, sync::Arc};
-use std::{env, fs};
-
-fn is_program_in_path(program: &str) -> bool {
-    if let Ok(path) = env::var("PATH") {
-        for p in path.split(':') {
-            let p_str = format!("{}/{}", p, program);
-            if fs::metadata(p_str).is_ok() {
-                return true;
-            }
-        }
-    }
-    false
-}
 
 impl SkimItem for DirItem {
     fn text(&self) -> std::borrow::Cow<str> {
