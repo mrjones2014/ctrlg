@@ -75,3 +75,8 @@ previews: true
 # use `bat` instead of `cat` for previews
 preview_with_bat: false
 ```
+
+Any configuration values can be overridden by passing them as arguments to the CLI.
+When passing arguments to the CLI, replace `_` with `-`, e.g. `preview_with_bat`
+should be passed to the CLI as `--preview-with-bat`.
+See `ctrlg --help` and `ctrlg find --help`.
