@@ -9,7 +9,9 @@ to the selected directory.
 Make sure you have `cargo` installed. If not, install it from [rustup.rs](https://rustup.rs).
 Then install the `ctrlg` CLI by running:
 
-`cargo install ctrlg`
+```
+cargo install ctrlg
+```
 
 Once the CLI is installed, you will need to set up the key binding depending on your shell.
 Alternatively, you can disable the default keybind by setting `$CTRLG_NOBIND` to `true`
@@ -17,15 +19,21 @@ before running the init script, then set up your own keybind to call `_ctrlg_sea
 
 ### Zsh
 
-`echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc`
+```
+echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc
+``````
 
 ### Bash
 
-`echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc`
+```
+echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
+```
 
 ### Fish
 
-`echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish`
+```
+echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish`
+```
 
 ## Tmux Integration
 
@@ -34,11 +42,15 @@ window, set the environment variable `CTRLG_TMUX` to `true`.
 
 ### Bash/Zsh
 
-`export CTRLG_TMUX=true`
+```
+export CTRLG_TMUX=true`
+```
 
 ### Fish
 
-`set -U CTRLG_TMUX true`
+```
+set -U CTRLG_TMUX true`
+```
 
 ## Configuration
 
