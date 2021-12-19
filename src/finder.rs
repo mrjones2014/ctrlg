@@ -24,7 +24,7 @@ impl SkimItem for DirItem {
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
         if self.readme.is_none() {
-            return ItemPreview::Command(format!("ls {}", self.path));
+            return ItemPreview::Command(format!("ls \"{}\"", self.path));
         }
 
         let readme_path = self.readme.as_ref().unwrap();
