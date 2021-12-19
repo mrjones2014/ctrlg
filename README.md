@@ -35,7 +35,7 @@ echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ### Fish
 
 ```
-echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish`
+echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish
 ```
 
 ## Tmux Integration
@@ -46,13 +46,13 @@ window, set the environment variable `CTRLG_TMUX` to `true`.
 ### Bash/Zsh
 
 ```
-export CTRLG_TMUX=true`
+export CTRLG_TMUX=true
 ```
 
 ### Fish
 
 ```
-set -U CTRLG_TMUX true`
+set -U CTRLG_TMUX true
 ```
 
 ## Configuration
