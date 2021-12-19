@@ -231,6 +231,7 @@ dependencies = [
  "config",
  "dirs-next",
  "glob",
+ "lazy_static",
  "serde 1.0.132",
  "shellexpand",
  "skim",

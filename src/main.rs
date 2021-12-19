@@ -1,3 +1,5 @@
+#[macro_use]
+extern crate lazy_static;
 use commands::ctrlgcommand::CtrlgCommand;
 use std::error::Error;
 use structopt::{clap::AppSettings, StructOpt};

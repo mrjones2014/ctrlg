@@ -1,14 +1,15 @@
-use std::path::PathBuf;
-
 use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
+use lazy_static;
 use serde::Deserialize;
+use std::path::PathBuf;
 
 #[derive(Deserialize)]
 pub struct Settings {
     pub search_dirs: Vec<String>,
     pub preview_files: Vec<String>,
     pub preview: bool,
+    pub preview_with_bat: bool,
 }
 
 impl Settings {
@@ -18,6 +19,7 @@ impl Settings {
         s.set_default("search_dirs", vec!["~/git/*"])?;
         s.set_default("preview_files", vec!["README.*"])?;
         s.set_default("preview", true)?;
+        s.set_default("preview_with_bat", false)?;
 
         let home = home_dir();
         if home.is_none() {
@@ -40,4 +42,8 @@ impl Settings {
 
         s.try_into()
     }
+}
+
+lazy_static! {
+    pub static ref SETTINGS: Settings = Settings::new().unwrap();
 }

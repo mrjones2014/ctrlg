@@ -1,4 +1,5 @@
 use crate::dirs::DirItem;
+use crate::settings::SETTINGS;
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
 use std::{borrow::Cow, path::PathBuf, sync::Arc};
@@ -39,15 +40,11 @@ impl SkimItem for DirItem {
             return ItemPreview::Command(format!("ls {}", self.path));
         }
 
-        let mut readme_path = PathBuf::new();
-        readme_path.push(self.path.to_string());
-        readme_path.push(self.readme.clone().unwrap());
-        let readme_path = readme_path.to_str();
-        if readme_path.is_none() {
+        if self.readme.is_none() {
             return ItemPreview::Command(format!("ls {}", self.path));
         }
-        let readme_path = readme_path.unwrap();
-        if is_program_in_path("bat") {
+        let readme_path = self.readme.as_ref().unwrap();
+        if SETTINGS.preview_with_bat {
             ItemPreview::Command(format!("bat --style=plain --color=always {}", readme_path))
         } else {
             ItemPreview::Command(format!("cat {}", readme_path))
@@ -64,10 +61,10 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
     rx_items
 }
 
-pub fn find(items: &[DirItem], preview: bool) -> Option<String> {
+pub fn find(items: &[DirItem]) -> Option<String> {
     let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
-        .preview(if preview { Some("") } else { None })
+        .preview(if SETTINGS.preview { Some("") } else { None })
         .multi(false)
         .build()
         .unwrap();

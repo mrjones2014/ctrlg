@@ -66,11 +66,11 @@ configuration is shown below:
 search_dirs:
   - "~/.git/*"
 # configure what files to check for to show in the preview window
-# of the fuzzy finder. Previews will use `bat` if it is installed,
-# otherwise it will use `cat`. If no matching file is found,
-# the contents of the directory are listed as the preview
+# of the fuzzy finder. Previews will use `cat` by default.
 preview_files:
   - "README.*"
 # enable or disable the preview window
 previews: true
+# use `bat` instead of `cat` for previews
+preview_with_bat: false
 ```

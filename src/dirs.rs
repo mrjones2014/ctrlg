@@ -1,4 +1,4 @@
-use crate::settings::Settings;
+use crate::settings::SETTINGS;
 use glob::{glob, GlobError};
 use std::{error::Error, fmt::Display, io, path::PathBuf};
 
@@ -9,8 +9,8 @@ pub struct DirItem {
     pub readme: Option<String>,
 }
 
-fn get_readme(path: PathBuf, settings: &Settings) -> Result<Option<String>, io::Error> {
-    for glob_pattern in settings.preview_files.iter() {
+fn get_readme(path: PathBuf) -> Result<Option<String>, io::Error> {
+    for glob_pattern in SETTINGS.preview_files.iter() {
         let mut preview_file_pattern = path.clone();
         preview_file_pattern.push(glob_pattern);
 
@@ -64,9 +64,9 @@ impl Display for GetDirsError {
     }
 }
 
-pub fn get_dirs(settings: &Settings) -> Result<Vec<DirItem>, GetDirsError> {
+pub fn get_dirs() -> Result<Vec<DirItem>, GetDirsError> {
     let mut items = Vec::new();
-    for dir in settings.search_dirs.iter() {
+    for dir in SETTINGS.search_dirs.iter() {
         let dir = shellexpand::tilde(dir);
         for child in glob(&dir).expect("Failed to resolve globbing pattern") {
             let path = child?;
@@ -79,7 +79,7 @@ pub fn get_dirs(settings: &Settings) -> Result<Vec<DirItem>, GetDirsError> {
                         .to_str()
                         .unwrap()
                         .to_string(),
-                    readme: get_readme(path, settings)?,
+                    readme: get_readme(path)?,
                 });
             }
         }

@@ -1,5 +1,5 @@
 use super::init;
-use crate::{dirs::get_dirs, finder::find, settings::Settings};
+use crate::{dirs::get_dirs, finder::find};
 use std::error::Error;
 use structopt::StructOpt;
 
@@ -13,11 +13,10 @@ pub enum CtrlgCommand {
 
 impl CtrlgCommand {
     pub fn run(self) -> Result<(), Box<dyn Error>> {
-        let settings = Settings::new()?;
         match self {
             CtrlgCommand::Find => {
-                let dirs = get_dirs(&settings)?;
-                let selected = find(&dirs, settings.preview);
+                let dirs = get_dirs()?;
+                let selected = find(&dirs);
                 if let Some(selected) = selected {
                     println!("{}", selected);
                 }
