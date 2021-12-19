@@ -22,11 +22,11 @@ function _ctrlg_search_and_go() {
   local ctrlg_selected_dir="$(ctrlg find)"
   if test -n "$ctrlg_selected_dir"; then
     if test -n "$CTRLG_TMUX"; then
-      _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir || exit; zle reset-prompt"
+      _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && zle reset-prompt && clear"
     else
       cd "$ctrlg_selected_dir" || exit
-      echo "resetting"
       zle reset-prompt
+      clear
     fi
   fi
 }
