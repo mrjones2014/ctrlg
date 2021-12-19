@@ -6,13 +6,14 @@ to the selected directory.
 
 ## Install
 
-// TODO publish to cargo
+Make sure you have `cargo` installed. If not, install it from [rustup.rs](https://rustup.rs).
+Then install the `ctrlg` CLI by running:
 
-Build from source using `cargo install --path .`.
+`cargo install ctrlg`
 
 Once the CLI is installed, you will need to set up the key binding depending on your shell.
-Alternatively, you can disable the default keybind by setting `$CTRLG_NOBIND` to `true`,
-and set up your own keybind to call `_ctrlg_search_and_go`.
+Alternatively, you can disable the default keybind by setting `$CTRLG_NOBIND` to `true`
+before running the init script, then set up your own keybind to call `_ctrlg_search_and_go`.
 
 ### Zsh
 
