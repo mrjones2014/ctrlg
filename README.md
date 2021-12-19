@@ -52,7 +52,7 @@ export CTRLG_TMUX=true
 ### Fish
 
 ```
-set -U CTRLG_TMUX true
+set CTRLG_TMUX true
 ```
 
 ## Configuration
