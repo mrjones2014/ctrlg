@@ -1,9 +1,8 @@
+use crate::commands::find;
 use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
 use serde::Deserialize;
-use std::{path::PathBuf, sync::Mutex};
-
-use crate::commands::find;
+use std::{env, fs, path::PathBuf, sync::Mutex};
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
@@ -13,6 +12,18 @@ pub struct Settings {
     pub preview_with_bat: bool,
 }
 
+fn is_bat_installed() -> bool {
+    if let Ok(path) = env::var("PATH") {
+        for p in path.split(":") {
+            let p_str = format!("{}/{}", p, "bat");
+            if fs::metadata(p_str).is_ok() {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::default();
@@ -20,7 +31,7 @@ impl Settings {
         s.set_default("search_dirs", vec!["~/git/*"])?;
         s.set_default("preview_files", vec!["README.*"])?;
         s.set_default("preview", true)?;
-        s.set_default("preview_with_bat", false)?;
+        s.set_default("preview_with_bat", is_bat_installed())?;
 
         let home = home_dir();
         if home.is_none() {

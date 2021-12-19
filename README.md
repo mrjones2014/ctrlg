@@ -67,13 +67,15 @@ configuration is shown below:
 search_dirs:
   - "~/git/*"
 # configure what files to check for to show in the preview window
-# of the fuzzy finder. Previews will use `cat` by default.
+# of the fuzzy finder. If `bat` is installed, it will be used
+# by default for previews, otherwise `cat` will be installed.
+# If no matching file is found, `ls` will be used for the preview.
 preview_files:
   - "README.*"
 # enable or disable the preview window
 previews: true
-# use `bat` instead of `cat` for previews
-preview_with_bat: false
+# use `bat` instead of `cat` for previews or vice versa
+preview_with_bat: [true if `bat` is installed, false otherwise]
 ```
 
 Any configuration values can be overridden by passing them as arguments to the CLI.
