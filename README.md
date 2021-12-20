@@ -43,16 +43,16 @@ echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 To make `ctrlg` send the `cd` command to all split panes in the current `tmux`
 window, set the environment variable `CTRLG_TMUX` to `true`.
 
-### Bash/Zsh
-
-```bash
-export CTRLG_TMUX=true
-```
-
 ### Fish
 
 ```fish
 set CTRLG_TMUX true
+```
+
+### Bash or Zsh
+
+```bash
+export CTRLG_TMUX=true
 ```
 
 ## Configuration
