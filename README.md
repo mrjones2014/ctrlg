@@ -12,7 +12,7 @@ configured by globbing patterns.
 Make sure you have `cargo` installed. If not, install it from [rustup.rs](https://rustup.rs).
 Then install the `ctrlg` CLI by running:
 
-```
+```sh
 cargo install ctrlg
 ```
 
@@ -22,20 +22,20 @@ before running the init script, then set up your own keybind to call `_ctrlg_sea
 
 ### Zsh
 
-```
+```zsh
 echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc
-``````
-
-### Bash
-
-```
-echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ```
 
 ### Fish
 
-```
+```fish
 echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish
+```
+
+### Bash
+
+```bash
+echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ```
 
 ## Tmux Integration
@@ -45,13 +45,13 @@ window, set the environment variable `CTRLG_TMUX` to `true`.
 
 ### Bash/Zsh
 
-```
+```bash
 export CTRLG_TMUX=true
 ```
 
 ### Fish
 
-```
+```fish
 set CTRLG_TMUX true
 ```
 
