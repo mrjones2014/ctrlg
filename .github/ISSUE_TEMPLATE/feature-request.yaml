@@ -8,23 +8,21 @@ body:
   - type: checkboxes
     id: similar-issues
     attributes:
+      label: Similar Issues
       options:
         - label: Before filing, I have searched for similar issues.
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: desc
     attributes:
-      value: |
-        # Description
+      label: Description
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: use-case
     attributes:
-      value: |
-        # Use Case
-
-        Please describe why the feature would be useful.
+      label: Use Case
+      description: Please describe why the feature would be useful
     validations:
       required: true

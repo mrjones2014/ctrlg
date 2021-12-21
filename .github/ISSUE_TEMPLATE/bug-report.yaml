@@ -1,4 +1,4 @@
-name: Bug Report
+name: 🐛 Bug Report
 description: File a bug report
 title: "[Bug]: "
 labels: ["bug"]
@@ -19,27 +19,30 @@ body:
       label: Description
     validations:
       required: true
-  - type: input
+  - type: textarea
     id: os-version
     attributes:
-      label: Operating System + Version (if macOS, please specify if it's Apple ARM silicon)
+      label: Operating System + Version
+      description: If macOS, please specify if it's Apple ARM silicon
     validations:
       required: true
   - type: textarea
     id: shell-version
     attributes:
-      label: Shell + Version (`bash --version`, `zsh --version`, `fish --version`, please use a code block)
+      label: Shell + Version
+      description: "`bash --version`, `zsh --version`, `fish --version`, please use a code block"
     validations:
       required: true
   - type: textarea
     id: min-config
     attributes:
-      label: Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
+      label: Minimal Configuration to Reproduce
+      description: "`.bashrc`, `.zshrc`, `config.fish`, please use a code block"
     validations:
       required: true
   - type: textarea
     id: details
     attributes:
-      label: Additinal Details
+      label: Additional Details
     validations:
       required: true
