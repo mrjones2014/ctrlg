@@ -20,16 +20,16 @@ Once the CLI is installed, you will need to set up the key binding depending on 
 Alternatively, you can disable the default keybind by setting `$CTRLG_NOBIND` to `true`
 before running the init script, then set up your own keybind to call `_ctrlg_search_and_go`.
 
-### Zsh
-
-```zsh
-echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc
-```
-
 ### Fish
 
 ```fish
 echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish
+```
+
+### Zsh
+
+```zsh
+echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc
 ```
 
 ### Bash
@@ -43,16 +43,16 @@ echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 To make `ctrlg` send the `cd` command to all split panes in the current `tmux`
 window, set the environment variable `CTRLG_TMUX` to `true`.
 
-### Bash/Zsh
-
-```bash
-export CTRLG_TMUX=true
-```
-
 ### Fish
 
 ```fish
 set CTRLG_TMUX true
+```
+
+### Bash or Zsh
+
+```bash
+export CTRLG_TMUX=true
 ```
 
 ## Configuration
