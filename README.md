@@ -99,7 +99,7 @@ is found, it will be rendered with [bat](https://github.com/sharkdp/bat) by defa
 if `bat` is installed, otherwise it will be rendered with `cat`. You can force using
 or not using `bat` with the `preview_with_bat` option. You can default to always
 using the fallback instead of rendering a file by setting an empty list of globbing
-patterns, like: `preview_files:`.
+patterns, like: `preview_files: []`.
 
 If no matching preview files are found, the directory listing is used as the preview. By
 default, directory contents are listed using [exa](https://github.com/ogham/exa) by default
