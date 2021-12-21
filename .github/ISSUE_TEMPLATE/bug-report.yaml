@@ -45,5 +45,3 @@ body:
     id: details
     attributes:
       label: Additional Details
-    validations:
-      required: true

@@ -4,6 +4,8 @@ use dirs_next::home_dir;
 use serde::Deserialize;
 use std::{env, fs, path::PathBuf, sync::Mutex};
 
+const CONFIG_FILE_NAMES: [&str; 2] = ["config.yml", "config.yaml"];
+
 #[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
     pub search_dirs: Vec<String>,
@@ -42,16 +44,20 @@ impl Settings {
 
         // merge user config if it exists
         let home = home.unwrap();
-        let user_config_path: PathBuf = [
-            home.to_str().expect("Failed to determine config directory"),
-            ".config",
-            "ctrlg",
-            "config.yml",
-        ]
-        .iter()
-        .collect();
-        if user_config_path.exists() {
-            s.merge(File::with_name(user_config_path.to_str().unwrap()))?;
+        for config_file_name in CONFIG_FILE_NAMES.iter() {
+            let user_config_path: PathBuf = [
+                home.to_str().expect("Failed to determine config directory"),
+                ".config",
+                "ctrlg",
+                config_file_name,
+            ]
+            .iter()
+            .collect();
+
+            if user_config_path.exists() {
+                s.merge(File::with_name(user_config_path.to_str().unwrap()))?;
+                break;
+            }
         }
 
         s.try_into()
