@@ -1,0 +1,26 @@
+name: Bug Report
+description: File a bug report
+title: "[Bug]: "
+labels: ["bug"]
+assignees:
+  - mrjones2014
+body:
+  - type: checkboxes
+    attributes:
+      label: Similar Issues
+      description: Before filing, I have searched for similar issues.
+  - type: markdown
+    attributes:
+      label: Brief Description
+  - type: markdown
+    attributes:
+      label: Operating System + Version (if macOS, please specify if it's Apple ARM silicon)
+  - type: markdown
+    attributes:
+      label: Shell + Version (`bash --version`, `zsh --version`, `fish --version`)
+  - type: markdown
+    attributes:
+      label: Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`)
+  - type: markdown
+    attributes:
+      label: Additinal Details
