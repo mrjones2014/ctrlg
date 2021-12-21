@@ -8,6 +8,7 @@ body:
   - type: checkboxes
     id: similar-issues
     attributes:
+      label: Similar Issues
       options:
         - label: Before filing, I have searched for similar issues.
     validations:
@@ -35,7 +36,7 @@ body:
   - type: markdown
     id: min-config
     attributes:
-      label: |
+      value: |
         # Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
     validations:
       required: true
