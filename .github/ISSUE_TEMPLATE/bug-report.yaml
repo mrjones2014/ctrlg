@@ -11,6 +11,7 @@ body:
       label: Similar Issues
       options:
         - label: Before filing, I have searched for similar issues.
+          required: true
     validations:
       required: true
   - type: textarea
