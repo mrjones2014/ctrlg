@@ -8,20 +8,23 @@ body:
   - type: checkboxes
     id: similar-issues
     attributes:
-      label: Similar Issues
-      description: Before filing, I have searched for similar issues.
+      options:
+        - label: Before filing, I have searched for similar issues.
     validations:
       required: true
   - type: markdown
     id: desc
     attributes:
-      label: Description
+      value: |
+        # Description
     validations:
       required: true
   - type: markdown
     id: use-case
     attributes:
-      label: Use Case
-      description: Describe why this feature would be useful.
+      value: |
+        # Use Case
+
+        Please describe why the feature would be useful.
     validations:
       required: true

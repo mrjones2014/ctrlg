@@ -8,17 +8,18 @@ body:
   - type: checkboxes
     id: similar-issues
     attributes:
-      label: Similar Issues
-      description: Before filing, I have searched for similar issues.
+      options:
+        - label: Before filing, I have searched for similar issues.
     validations:
       required: true
   - type: markdown
     id: desc
     attributes:
-      label: Brief Description
+      value: |
+        # Description
     validations:
       required: true
-  - type: markdown
+  - type: input
     id: os-version
     attributes:
       label: Operating System + Version (if macOS, please specify if it's Apple ARM silicon)
@@ -27,18 +28,21 @@ body:
   - type: markdown
     id: shell-version
     attributes:
-      label: Shell + Version (`bash --version`, `zsh --version`, `fish --version`, please use a code block)
+      value: |
+        # Shell + Version (`bash --version`, `zsh --version`, `fish --version`, please use a code block)
     validations:
       required: true
   - type: markdown
     id: min-config
     attributes:
-      label: Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
+      label: |
+        # Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
     validations:
       required: true
   - type: markdown
     id: details
     attributes:
-      label: Additinal Details
+      value: |
+        # Additinal Details
     validations:
       required: true
