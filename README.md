@@ -7,6 +7,9 @@ configured by globbing patterns.
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
 
+By default, only `~/git/*` is searched. To change this or add additional
+directories to search, see [configuration](#configuration).
+
 ## Install
 
 Make sure you have `cargo` installed. If not, install it from [rustup.rs](https://rustup.rs).
@@ -73,9 +76,13 @@ preview_files:
 # enable or disable the preview window
 previews: true
 # force using or not using `bat` for previews
+# this represents the default but in an actual
+# config file, this should just be `true` or `false`
 preview_with_bat: [true if `bat` is installed, false otherwise]
 # force using or not using `exa` for preview fallback when no
 # matching `preview_files` are found
+# this represents the default but in an actual
+# config file, this should just be `true` or `false`
 preview_fallback_exa: [true if `exa` is installed, false otherwise]
 ```
 
