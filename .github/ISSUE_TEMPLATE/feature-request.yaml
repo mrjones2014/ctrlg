@@ -6,13 +6,22 @@ assignees:
   - mrjones2014
 body:
   - type: checkboxes
+    id: similar-issues
     attributes:
       label: Similar Issues
       description: Before filing, I have searched for similar issues.
+    validations:
+      required: true
   - type: markdown
+    id: desc
     attributes:
       label: Description
+    validations:
+      required: true
   - type: markdown
+    id: use-case
     attributes:
       label: Use Case
       description: Describe why this feature would be useful.
+    validations:
+      required: true

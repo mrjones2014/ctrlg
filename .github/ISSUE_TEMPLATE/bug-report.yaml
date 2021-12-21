@@ -6,21 +6,39 @@ assignees:
   - mrjones2014
 body:
   - type: checkboxes
+    id: similar-issues
     attributes:
       label: Similar Issues
       description: Before filing, I have searched for similar issues.
+    validations:
+      required: true
   - type: markdown
+    id: desc
     attributes:
       label: Brief Description
+    validations:
+      required: true
   - type: markdown
+    id: os-version
     attributes:
       label: Operating System + Version (if macOS, please specify if it's Apple ARM silicon)
+    validations:
+      required: true
   - type: markdown
+    id: shell-version
     attributes:
-      label: Shell + Version (`bash --version`, `zsh --version`, `fish --version`)
+      label: Shell + Version (`bash --version`, `zsh --version`, `fish --version`, please use a code block)
+    validations:
+      required: true
   - type: markdown
+    id: min-config
     attributes:
-      label: Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`)
+      label: Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
+    validations:
+      required: true
   - type: markdown
+    id: details
     attributes:
       label: Additinal Details
+    validations:
+      required: true
