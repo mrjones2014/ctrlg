@@ -13,11 +13,10 @@ body:
         - label: Before filing, I have searched for similar issues.
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: desc
     attributes:
-      value: |
-        # Description
+      label: Description
     validations:
       required: true
   - type: input
@@ -26,24 +25,21 @@ body:
       label: Operating System + Version (if macOS, please specify if it's Apple ARM silicon)
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: shell-version
     attributes:
-      value: |
-        # Shell + Version (`bash --version`, `zsh --version`, `fish --version`, please use a code block)
+      label: Shell + Version (`bash --version`, `zsh --version`, `fish --version`, please use a code block)
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: min-config
     attributes:
-      value: |
-        # Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
+      label: Minimal Configuration to Reproduce (`.bashrc`, `.zshrc`, `config.fish`, please use a code block)
     validations:
       required: true
-  - type: markdown
+  - type: textarea
     id: details
     attributes:
-      value: |
-        # Additinal Details
+      label: Additinal Details
     validations:
       required: true
