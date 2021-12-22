@@ -34,6 +34,7 @@ impl Display for DirItemError {
 pub struct DirItem {
     pub path: PathBuf,
     pub display: String,
+    pub match_str: String,
     pub readme: Option<PathBuf>,
 }
 
@@ -41,10 +42,17 @@ impl DirItem {
     pub fn new(path: PathBuf) -> Result<Self, DirItemError> {
         let display = get_display(&path)?;
         let readme = get_readme(&path)?;
+        let match_str = path
+            .file_name()
+            .expect("Failed to expand path")
+            .to_str()
+            .unwrap()
+            .to_string();
 
         Ok(Self {
             path,
             display,
+            match_str,
             readme,
         })
     }
@@ -70,7 +78,7 @@ fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
             "■"
         };
         display = format!(
-            "{} {} {}",
+            "{}  {} {}",
             Cyan.paint(display),
             Red.paint(separator),
             Red.paint(branch)

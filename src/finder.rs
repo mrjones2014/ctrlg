@@ -7,7 +7,11 @@ use std::{borrow::Cow, sync::Arc};
 
 impl SkimItem for DirItem {
     fn text(&self) -> std::borrow::Cow<str> {
-        Cow::from(self.display.clone())
+        Cow::from(self.match_str.clone())
+    }
+
+    fn display<'a>(&'a self, _: DisplayContext<'a>) -> AnsiString<'a> {
+        AnsiString::parse(self.display.as_str())
     }
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
@@ -54,7 +58,7 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
 }
 
 pub fn find(items: &[DirItem]) -> Option<String> {
-    let mut skim_options = SkimOptionsBuilder::default()
+    let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
         .preview(if Settings::get_readonly().preview {
             Some("")
@@ -64,10 +68,6 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         .multi(false)
         .build()
         .unwrap();
-
-    skim_options.cmd_collector = Rc::new(RefCell::new(SkimItemReader::new(
-        SkimItemReaderOption::default().ansi(true).build(),
-    )));
 
     let items = receiver(items);
 
