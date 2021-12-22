@@ -87,10 +87,9 @@ preview_fallback_exa: [true if `exa` is installed, false otherwise]
 # enable or disable showing git branch for directories
 # which are git repositories
 show_git_branch: true
-# use a nerd font branch symbol to separate
-# directory name from branch name, if false
-# a unicode square will be used
-use_nerd_font: false
+# character to render between the directory name and git branch name
+# you can change this to a Nerd Font symbol if you like
+git_branch_separator: "■"
 ```
 
 Any configuration values can be overridden by passing them as arguments to the CLI.

@@ -72,15 +72,10 @@ fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
 
     let branch = git_meta::get_current_branch(&path)?;
     if let Some(branch) = branch {
-        let separator = if Settings::get_readonly().use_nerd_font {
-            ""
-        } else {
-            "■"
-        };
         display = format!(
             "{}  {} {}",
             Cyan.paint(display),
-            Red.paint(separator),
+            Red.paint(Settings::get_readonly().git_branch_separator),
             Red.paint(branch)
         );
     }
