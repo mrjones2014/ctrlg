@@ -84,6 +84,13 @@ preview_with_bat: [true if `bat` is installed, false otherwise]
 # this represents the default but in an actual
 # config file, this should just be `true` or `false`
 preview_fallback_exa: [true if `exa` is installed, false otherwise]
+# enable or disable showing git branch for directories
+# which are git repositories
+show_git_branch: true
+# use a nerd font branch symbol to separate
+# directory name from branch name, if false
+# a unicode square will be used
+use_nerd_font: false
 ```
 
 Any configuration values can be overridden by passing them as arguments to the CLI.
