@@ -1,7 +1,7 @@
 use ansi_term::Color;
 use std::num::ParseIntError;
 
-pub fn parse_rgb_triple(input: &String) -> Option<(u8, u8, u8)> {
+pub fn parse_rgb_triple(input: &str) -> Option<(u8, u8, u8)> {
     let values = input
         .split(',')
         .map(|value| value.trim())
@@ -20,7 +20,7 @@ pub fn parse_rgb_triple(input: &String) -> Option<(u8, u8, u8)> {
     None
 }
 
-pub fn parse_color(input: &String, default_color: Color) -> Color {
+pub fn parse_color(input: &String) -> Color {
     match input.to_lowercase().as_str() {
         "black" => Color::Black,
         "red" => Color::Red,
@@ -30,7 +30,7 @@ pub fn parse_color(input: &String, default_color: Color) -> Color {
         "purple" => Color::Purple,
         "cyan" => Color::Cyan,
         "white" => Color::White,
-        _ => {
+        input => {
             // check for an integer-specified xterm-256 color
             // see: https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg
             let is_xterm_256_color = input.parse::<u8>();
@@ -39,7 +39,8 @@ pub fn parse_color(input: &String, default_color: Color) -> Color {
             } else if let Some(rgb_triple) = parse_rgb_triple(input) {
                 Color::RGB(rgb_triple.0, rgb_triple.1, rgb_triple.2)
             } else {
-                default_color
+                eprintln!("Invalid color definition found in config file: '{}'", input);
+                Color::White
             }
         }
     }

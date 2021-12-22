@@ -81,13 +81,12 @@ fn get_display(path: &Path) -> Result<String, DirItemError> {
     let branch = git_meta::get_current_branch(path)?;
     if let Some(branch) = branch {
         let settings = Settings::get_readonly();
-        let color_settings = settings.colors.unwrap_or_else(|| ColorSettings::default());
+        let color_settings = settings.colors;
         display = format!(
             "{}  {} {}",
-            parse_color(&color_settings.dir_name, Color::Cyan).paint(display),
-            parse_color(&color_settings.git_branch, Color::Red)
-                .paint(settings.git_branch_separator),
-            parse_color(&color_settings.git_branch, Color::Red).paint(branch),
+            parse_color(&color_settings.dir_name).paint(display),
+            parse_color(&color_settings.git_branch).paint(settings.git_branch_separator),
+            parse_color(&color_settings.git_branch).paint(branch),
         );
     }
 
