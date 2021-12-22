@@ -4,6 +4,7 @@ use commands::CtrlgCommand;
 use std::error::Error;
 use structopt::{clap::AppSettings, StructOpt};
 
+mod colors;
 mod command_strs;
 mod commands;
 mod dir_item;
@@ -19,7 +20,11 @@ const VERSION: &str = env!("CARGO_PKG_VERSION");
     author = "Mat Jones <mat@mjones.network>",
     version = VERSION,
     about = "Press ctrl+g to search and jump to any directory",
-    global_settings(&[AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder])
+    global_settings(&[
+        AppSettings::UnifiedHelpMessage,
+        AppSettings::ColoredHelp,
+        AppSettings::DeriveDisplayOrder
+    ])
 )]
 struct Ctrlg {
     #[structopt(subcommand)]

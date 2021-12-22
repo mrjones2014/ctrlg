@@ -6,6 +6,13 @@ use std::{env, fs, path::PathBuf, sync::Mutex};
 
 const CONFIG_FILE_NAMES: [&str; 2] = ["config.yml", "config.yaml"];
 
+#[derive(Debug, Deserialize, Clone, Default)]
+pub struct ColorSettings {
+    pub dir_name: String,
+    pub git_branch: String,
+    pub bat_theme: String,
+}
+
 #[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
     pub search_dirs: Vec<String>,
@@ -15,6 +22,7 @@ pub struct Settings {
     pub preview_fallback_exa: bool,
     pub show_git_branch: bool,
     pub git_branch_separator: String,
+    pub colors: Option<ColorSettings>,
 }
 
 fn is_program_in_path(program: &str) -> bool {
