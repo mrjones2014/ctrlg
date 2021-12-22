@@ -20,7 +20,7 @@ pub fn parse_rgb_triple(input: &str) -> Option<(u8, u8, u8)> {
     None
 }
 
-pub fn parse_color(input: &String) -> Color {
+pub fn parse_color(input: &str) -> Color {
     match input.to_lowercase().as_str() {
         "black" => Color::Black,
         "red" => Color::Red,

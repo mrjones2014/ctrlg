@@ -1,9 +1,4 @@
-use crate::{
-    colors::parse_color,
-    git_meta,
-    settings::{ColorSettings, Settings},
-};
-use ansi_term::Color;
+use crate::{colors::parse_color, git_meta, settings::Settings};
 use glob::glob;
 use std::{
     fmt::Display,

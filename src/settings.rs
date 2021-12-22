@@ -49,7 +49,7 @@ impl Settings {
         s.set_default("show_git_branch", true)?;
         s.set_default("git_branch_separator", "■")?;
         s.set_default("colors.dir_name", "cyan")?;
-        s.set_default("colors.git_branch", "red")?;
+        s.set_default("colors.git_branch", "247,78,39")?; // git brand orange color
         s.set_default("colors.bat_theme", "ansi")?;
 
         let home = home_dir();
