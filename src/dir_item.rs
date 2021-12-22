@@ -1,11 +1,12 @@
-use crate::{command_strs, settings::Settings};
+use crate::{git_meta, settings::Settings};
+use ansi_term::Color::{Cyan, Red};
 use glob::glob;
-use std::{fmt::Display, io, path::PathBuf, process::Command, string::FromUtf8Error};
+use std::{fmt::Display, io, path::PathBuf};
 
 #[derive(Debug)]
 pub enum DirItemError {
     IO(io::Error),
-    UTF8(FromUtf8Error),
+    Git(git2::Error),
 }
 
 impl From<io::Error> for DirItemError {
@@ -14,9 +15,9 @@ impl From<io::Error> for DirItemError {
     }
 }
 
-impl From<FromUtf8Error> for DirItemError {
-    fn from(e: FromUtf8Error) -> Self {
-        DirItemError::UTF8(e)
+impl From<git2::Error> for DirItemError {
+    fn from(e: git2::Error) -> Self {
+        DirItemError::Git(e)
     }
 }
 
@@ -24,12 +25,7 @@ impl Display for DirItemError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             DirItemError::IO(e) => write!(f, "Error reading directory: {}", e),
-            DirItemError::UTF8(e) => write!(
-                f,
-                "Error parsing {} output: {}",
-                command_strs::DIR_INFO_HOOK[0],
-                e
-            ),
+            DirItemError::Git(e) => write!(f, "Error reading git metadata: {}", e),
         }
     }
 }
@@ -38,49 +34,54 @@ impl Display for DirItemError {
 pub struct DirItem {
     pub path: PathBuf,
     pub display: String,
+    pub display_uncolored: String,
     pub readme: Option<PathBuf>,
 }
 
 impl DirItem {
     pub fn new(path: PathBuf) -> Result<Self, DirItemError> {
-        let display = get_display(&path)?;
+        let (display, display_uncolored) = get_display(&path)?;
         let readme = get_readme(&path)?;
 
         Ok(Self {
             path,
             display,
+            display_uncolored,
             readme,
         })
     }
 }
 
-fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
+fn get_display(path: &PathBuf) -> Result<(String, String), DirItemError> {
     let mut display = path
         .file_name()
         .expect("Failed to expand path")
         .to_str()
         .unwrap()
         .to_string();
+    let mut display_uncolored = display.clone();
 
-    let result = Command::new(command_strs::DIR_INFO_HOOK[0])
-        .arg(path.to_str().expect("Failed to expand path").to_string())
-        .output();
-
-    if let Ok(output) = result {
-        let info = String::from_utf8(output.stdout)?;
-        println!("{}", info);
-        let first_line = info.lines().next();
-        if let Some(line) = first_line {
-            display = format!(
-                "{} {} {}",
-                display,
-                Settings::get_readonly().dir_info_separator,
-                line
-            );
-        }
+    if !Settings::get_readonly().show_git_branch {
+        return Ok((display, display_uncolored));
     }
 
-    Ok(display)
+    let branch = git_meta::get_current_branch(&path)?;
+    if let Some(branch) = branch {
+        let separator = if Settings::get_readonly().use_nerd_font {
+            ""
+        } else {
+            "■"
+        };
+        display = format!(
+            "{} {} {}",
+            Cyan.paint(display),
+            Red.paint(separator),
+            Red.paint(branch.as_str())
+        );
+        display_uncolored = format!("{} {} {}", display_uncolored, separator, branch);
+    }
+
+    Ok((display, display_uncolored))
 }
 
 fn get_readme(path: &PathBuf) -> Result<Option<PathBuf>, io::Error> {

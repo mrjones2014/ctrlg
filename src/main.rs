@@ -9,6 +9,7 @@ mod commands;
 mod dir_item;
 mod dirs;
 mod finder;
+mod git_meta;
 mod settings;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");

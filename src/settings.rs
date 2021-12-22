@@ -13,7 +13,8 @@ pub struct Settings {
     pub preview: bool,
     pub preview_with_bat: bool,
     pub preview_fallback_exa: bool,
-    pub dir_info_separator: String,
+    pub show_git_branch: bool,
+    pub use_nerd_font: bool,
 }
 
 fn is_program_in_path(program: &str) -> bool {
@@ -37,7 +38,8 @@ impl Settings {
         s.set_default("preview", true)?;
         s.set_default("preview_with_bat", is_program_in_path("bat"))?;
         s.set_default("preview_fallback_exa", is_program_in_path("exa"))?;
-        s.set_default("dir_info_separator", "-")?;
+        s.set_default("show_git_branch", true)?;
+        s.set_default("use_nerd_font", true)?;
 
         let home = home_dir();
         if home.is_none() {
