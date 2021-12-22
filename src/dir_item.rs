@@ -1,5 +1,4 @@
-use crate::{git_meta, settings::Settings};
-use ansi_term::Color::{Cyan, Red};
+use crate::{colors::parse_color, git_meta, settings::Settings};
 use glob::glob;
 use std::{
     fmt::Display,
@@ -76,11 +75,15 @@ fn get_display(path: &Path) -> Result<String, DirItemError> {
 
     let branch = git_meta::get_current_branch(path)?;
     if let Some(branch) = branch {
+        let settings = Settings::get_readonly();
+        let color_settings = settings.colors;
         display = format!(
             "{}  {} {}",
-            Cyan.paint(display),
-            Red.paint(Settings::get_readonly().git_branch_separator),
-            Red.paint(branch)
+            parse_color(&color_settings.dir_name).bold().paint(display),
+            parse_color(&color_settings.git_branch)
+                .bold()
+                .paint(settings.git_branch_separator),
+            parse_color(&color_settings.git_branch).bold().paint(branch),
         );
     }
 

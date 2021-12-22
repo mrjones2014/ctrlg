@@ -7,6 +7,13 @@ use std::{env, fs, path::PathBuf, sync::Mutex};
 const CONFIG_FILE_NAMES: [&str; 2] = ["config.yml", "config.yaml"];
 
 #[derive(Debug, Deserialize, Clone)]
+pub struct ColorSettings {
+    pub dir_name: String,
+    pub git_branch: String,
+    pub bat_theme: String,
+}
+
+#[derive(Debug, Deserialize, Clone)]
 pub struct Settings {
     pub search_dirs: Vec<String>,
     pub preview_files: Vec<String>,
@@ -15,6 +22,7 @@ pub struct Settings {
     pub preview_fallback_exa: bool,
     pub show_git_branch: bool,
     pub git_branch_separator: String,
+    pub colors: ColorSettings,
 }
 
 fn is_program_in_path(program: &str) -> bool {
@@ -40,6 +48,9 @@ impl Settings {
         s.set_default("preview_fallback_exa", is_program_in_path("exa"))?;
         s.set_default("show_git_branch", true)?;
         s.set_default("git_branch_separator", "■")?;
+        s.set_default("colors.dir_name", "cyan")?;
+        s.set_default("colors.git_branch", "247,78,39")?; // git brand orange color
+        s.set_default("colors.bat_theme", "ansi")?;
 
         let home = home_dir();
         if home.is_none() {
@@ -96,5 +107,12 @@ impl Settings {
 }
 
 lazy_static! {
-    pub static ref SETTINGS: Mutex<Settings> = Mutex::from(Settings::new().unwrap());
+    pub static ref SETTINGS: Mutex<Settings> = {
+        let settings = Settings::new();
+        if let Err(e) = settings {
+            panic!("Failed to parse yml from configuration file: {}", e);
+        }
+
+        Mutex::from(settings.unwrap())
+    };
 }
