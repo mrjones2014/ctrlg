@@ -96,7 +96,7 @@ colors:
   # directory name color
   dir_name: "cyan"
   # git branch color
-  git_branch: "red"
+  git_branch: "247,78,39" # this is git's brand orange color
   # name of theme to use for `bat`
   # see: https://github.com/sharkdp/bat#highlighting-theme
   bat_theme: "ansi"
