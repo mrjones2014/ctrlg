@@ -1,55 +1,57 @@
-use crate::dirs::DirItem;
+use crate::command_strs;
+use crate::dir_item::DirItem;
 use crate::settings::{Settings, SETTINGS};
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
-use std::{borrow::Cow, path::PathBuf, sync::Arc};
+use std::{borrow::Cow, sync::Arc};
 
 impl SkimItem for DirItem {
     fn text(&self) -> std::borrow::Cow<str> {
-        let path = PathBuf::from(self.path.clone());
-        let dir_name = path.file_name();
-        if dir_name.is_none() {
-            return Cow::from("");
-        }
+        Cow::from(self.match_str.clone())
+    }
 
-        let dir_name = dir_name.unwrap();
-        let dir_name = dir_name.to_str();
-        if dir_name.is_none() {
-            return Cow::from("");
-        }
-
-        let dir_name = dir_name.unwrap();
-        Cow::from(dir_name.to_string())
+    fn display<'a>(&'a self, _: DisplayContext<'a>) -> AnsiString<'a> {
+        AnsiString::parse(self.display.as_str())
     }
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
         if self.readme.is_none() {
             if Settings::get_readonly().preview_fallback_exa {
                 return ItemPreview::Command(format!(
-                    "exa --icons --color=always -s type -F \"{}\"",
-                    self.path
+                    "{} \"{}\"",
+                    command_strs::EXA.join(" "),
+                    self.path.to_str().unwrap().to_string()
                 ));
             }
 
-            return ItemPreview::Command(format!("ls \"{}\"", self.path));
+            return ItemPreview::Command(format!(
+                "{} \"{}\"",
+                command_strs::LS.join(" "),
+                self.path.to_str().unwrap().to_string()
+            ));
         }
 
         let readme_path = self.readme.as_ref().unwrap();
         if SETTINGS.lock().unwrap().preview_with_bat {
             ItemPreview::Command(format!(
-                "bat --style=plain --color=always \"{}\"",
-                readme_path
+                "{} \"{}\"",
+                command_strs::BAT.join(" "),
+                readme_path.to_str().unwrap().to_string()
             ))
         } else {
-            ItemPreview::Command(format!("cat \"{}\"", readme_path))
+            ItemPreview::Command(format!(
+                "{} \"{}\"",
+                command_strs::CAT.join(" "),
+                readme_path.to_str().unwrap().to_string()
+            ))
         }
     }
 }
 
 fn receiver(items: &[DirItem]) -> SkimItemReceiver {
     let (tx_items, rx_items): (SkimItemSender, SkimItemReceiver) = unbounded();
-    items.iter().for_each(|feature| {
-        let _ = tx_items.send(Arc::new(feature.to_owned()));
+    items.iter().for_each(|item| {
+        let _ = tx_items.send(Arc::new(item.to_owned()));
     });
     drop(tx_items); // indicates that all items have been sent
     rx_items
@@ -67,9 +69,9 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         .build()
         .unwrap();
 
-    let receiver = receiver(items);
+    let items = receiver(items);
 
-    Skim::run_with(&skim_options, Some(receiver))
+    Skim::run_with(&skim_options, Some(items))
         .map(|out| {
             let selected = out.selected_items.first();
             let selected = match selected {
@@ -80,12 +82,10 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                 None => None,
             };
 
-            selected?;
-
-            let selected = selected.unwrap();
-
-            if out.final_key == Key::Enter {
-                return Some(selected.path.to_string());
+            if let Some(selected) = selected {
+                if out.final_key == Key::Enter {
+                    return Some(selected.path.to_str().unwrap().to_string());
+                }
             }
 
             None

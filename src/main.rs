@@ -4,9 +4,12 @@ use commands::CtrlgCommand;
 use std::error::Error;
 use structopt::{clap::AppSettings, StructOpt};
 
+mod command_strs;
 mod commands;
+mod dir_item;
 mod dirs;
 mod finder;
+mod git_meta;
 mod settings;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
