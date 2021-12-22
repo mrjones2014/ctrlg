@@ -3,7 +3,6 @@ use crate::dir_item::DirItem;
 use crate::settings::{Settings, SETTINGS};
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
-use std::io::Cursor;
 use std::{borrow::Cow, sync::Arc};
 
 impl SkimItem for DirItem {
@@ -62,42 +61,28 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .color(Some("ANSI"))
         .multi(false)
         .build()
         .unwrap();
-
-    let item_reader = SkimItemReader::new(SkimItemReaderOption::default().ansi(true).build());
-    let skim_items = item_reader.of_bufread(Cursor::new(
-        items
-            .iter()
-            .map(|item| item.display.to_string())
-            .collect::<Vec<String>>()
-            .join("\n"),
-    ));
 
     skim_options.cmd_collector = Rc::new(RefCell::new(SkimItemReader::new(
         SkimItemReaderOption::default().ansi(true).build(),
     )));
 
-    Skim::run_with(&skim_options, Some(skim_items))
+    let items = receiver(items);
+
+    Skim::run_with(&skim_options, Some(items))
         .map(|out| {
             let selected = out.selected_items.first();
             let selected = match selected {
                 Some(item) => {
-                    let selected_dir = item.output();
+                    let selected_dir = (**item).as_any().downcast_ref::<DirItem>().unwrap();
                     Some(selected_dir)
                 }
                 None => None,
             };
 
             if let Some(selected) = selected {
-                let selected = items
-                    .iter()
-                    .find(|item| item.display_uncolored == selected.to_string());
-                selected?;
-                let selected = selected.unwrap();
-
                 if out.final_key == Key::Enter {
                     return Some(selected.path.to_str().unwrap().to_string());
                 }

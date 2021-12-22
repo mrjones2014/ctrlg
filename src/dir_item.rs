@@ -34,35 +34,32 @@ impl Display for DirItemError {
 pub struct DirItem {
     pub path: PathBuf,
     pub display: String,
-    pub display_uncolored: String,
     pub readme: Option<PathBuf>,
 }
 
 impl DirItem {
     pub fn new(path: PathBuf) -> Result<Self, DirItemError> {
-        let (display, display_uncolored) = get_display(&path)?;
+        let display = get_display(&path)?;
         let readme = get_readme(&path)?;
 
         Ok(Self {
             path,
             display,
-            display_uncolored,
             readme,
         })
     }
 }
 
-fn get_display(path: &PathBuf) -> Result<(String, String), DirItemError> {
+fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
     let mut display = path
         .file_name()
         .expect("Failed to expand path")
         .to_str()
         .unwrap()
         .to_string();
-    let mut display_uncolored = display.clone();
 
     if !Settings::get_readonly().show_git_branch {
-        return Ok((display, display_uncolored));
+        return Ok(display);
     }
 
     let branch = git_meta::get_current_branch(&path)?;
@@ -76,12 +73,11 @@ fn get_display(path: &PathBuf) -> Result<(String, String), DirItemError> {
             "{} {} {}",
             Cyan.paint(display),
             Red.paint(separator),
-            Red.paint(branch.as_str())
+            Red.paint(branch)
         );
-        display_uncolored = format!("{} {} {}", display_uncolored, separator, branch);
     }
 
-    Ok((display, display_uncolored))
+    Ok(display)
 }
 
 fn get_readme(path: &PathBuf) -> Result<Option<PathBuf>, io::Error> {
