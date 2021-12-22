@@ -11,3 +11,7 @@ publish:
 .PHONY: clean
 clean:
 	@cargo clean
+
+.PHONY: test
+test:
+	cargo test

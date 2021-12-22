@@ -45,3 +45,38 @@ pub fn parse_color(input: &str) -> Color {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use ansi_term::Color;
+
+    macro_rules! color_test {
+        ($($name:ident: $value:expr,)*) => {
+            $(
+                #[test]
+                fn $name() {
+                    let (input, expected) = $value;
+                    let output = parse_color(input);
+                    assert_eq!(expected, output);
+                }
+            )*
+        }
+    }
+
+    color_test! {
+        black: ("black", Color::Black),
+        red: ("red", Color::Red),
+        green: ("green", Color::Green),
+        yellow: ("yellow", Color::Yellow),
+        blue: ("blue", Color::Blue),
+        purple: ("purple", Color::Purple),
+        cyan: ("cyan", Color::Cyan),
+        white: ("white", Color::White),
+        invalid_named_color: ("invalid named color", Color::White),
+        fixed_color: ("255", Color::Fixed(255)),
+        rgb: ("255,255,255", Color::RGB(255, 255, 255)),
+        decimal_fixed: ("17.25", Color::White), // decimal fixed colors are not valid
+        decimal_rgb: ("17.25, 17.25, 17.25", Color::White), // decimal RGB colors are not valid
+    }
+}
