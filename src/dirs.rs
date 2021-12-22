@@ -1,39 +1,6 @@
-use crate::settings::Settings;
+use crate::{dir_item::DirItem, settings::Settings};
 use glob::{glob, GlobError};
-use std::{error::Error, fmt::Display, io, path::PathBuf};
-
-#[derive(Debug, Clone)]
-pub struct DirItem {
-    pub path: String,
-    pub display: String,
-    pub readme: Option<String>,
-}
-
-fn get_readme(path: PathBuf) -> Result<Option<String>, io::Error> {
-    for glob_pattern in Settings::get_readonly().preview_files.iter() {
-        let mut preview_file_pattern = path.clone();
-        preview_file_pattern.push(glob_pattern);
-
-        let preview_file_pattern = preview_file_pattern
-            .to_str()
-            .expect("Failed to expand preview file path");
-
-        let matched_preview_file = glob(preview_file_pattern)
-            .expect("Failed to expand preview file globbing pattern")
-            .flatten()
-            .next();
-
-        if let Some(file) = matched_preview_file {
-            return Ok(Some(
-                file.to_str()
-                    .expect("Failed to expand preview file path")
-                    .to_string(),
-            ));
-        }
-    }
-
-    Ok(None)
-}
+use std::{error::Error, fmt::Display, io};
 
 #[derive(Debug)]
 pub enum GetDirsError {
@@ -71,16 +38,7 @@ pub fn get_dirs() -> Result<Vec<DirItem>, GetDirsError> {
         for child in glob(&dir).expect("Failed to resolve globbing pattern") {
             let path = child?;
             if path.is_dir() {
-                items.push(DirItem {
-                    path: path.to_str().unwrap().to_string(),
-                    display: path
-                        .file_name()
-                        .expect("Failed to trim directory name")
-                        .to_str()
-                        .unwrap()
-                        .to_string(),
-                    readme: get_readme(path)?,
-                });
+                items.push(DirItem::new(path)?);
             }
         }
     }

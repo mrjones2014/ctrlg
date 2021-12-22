@@ -5,6 +5,7 @@ use std::error::Error;
 use structopt::{clap::AppSettings, StructOpt};
 
 mod commands;
+mod dir_item;
 mod dirs;
 mod finder;
 mod settings;

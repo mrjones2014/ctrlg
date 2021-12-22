@@ -1,4 +1,4 @@
-use crate::dirs::DirItem;
+use crate::dir_item::DirItem;
 use crate::settings::{Settings, SETTINGS};
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
@@ -27,21 +27,27 @@ impl SkimItem for DirItem {
             if Settings::get_readonly().preview_fallback_exa {
                 return ItemPreview::Command(format!(
                     "exa --icons --color=always -s type -F \"{}\"",
-                    self.path
+                    self.path.to_str().unwrap().to_string()
                 ));
             }
 
-            return ItemPreview::Command(format!("ls \"{}\"", self.path));
+            return ItemPreview::Command(format!(
+                "ls \"{}\"",
+                self.path.to_str().unwrap().to_string()
+            ));
         }
 
         let readme_path = self.readme.as_ref().unwrap();
         if SETTINGS.lock().unwrap().preview_with_bat {
             ItemPreview::Command(format!(
                 "bat --style=plain --color=always \"{}\"",
-                readme_path
+                readme_path.to_str().unwrap().to_string()
             ))
         } else {
-            ItemPreview::Command(format!("cat \"{}\"", readme_path))
+            ItemPreview::Command(format!(
+                "cat \"{}\"",
+                readme_path.to_str().unwrap().to_string()
+            ))
         }
     }
 }
@@ -85,7 +91,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
             let selected = selected.unwrap();
 
             if out.final_key == Key::Enter {
-                return Some(selected.path.to_string());
+                return Some(selected.path.to_str().unwrap().to_string());
             }
 
             None
