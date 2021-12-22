@@ -1,5 +1,5 @@
 use git2::{ErrorCode, Repository};
-use std::{fs, path::PathBuf};
+use std::{fs, path::Path};
 
 fn name_from_unborn_branch(repo: &Repository, e: git2::Error) -> Option<String> {
     if e.code() == ErrorCode::UnbornBranch {
@@ -22,7 +22,7 @@ fn name_from_unborn_branch(repo: &Repository, e: git2::Error) -> Option<String> 
     }
 }
 
-pub fn get_current_branch(path: &PathBuf) -> Result<Option<String>, git2::Error> {
+pub fn get_current_branch(path: &Path) -> Result<Option<String>, git2::Error> {
     let repo = Repository::discover(path);
     if repo.is_err() {
         return Ok(None);

@@ -1,7 +1,11 @@
 use crate::{git_meta, settings::Settings};
 use ansi_term::Color::{Cyan, Red};
 use glob::glob;
-use std::{fmt::Display, io, path::PathBuf};
+use std::{
+    fmt::Display,
+    io,
+    path::{Path, PathBuf},
+};
 
 #[derive(Debug)]
 pub enum DirItemError {
@@ -58,7 +62,7 @@ impl DirItem {
     }
 }
 
-fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
+fn get_display(path: &Path) -> Result<String, DirItemError> {
     let mut display = path
         .file_name()
         .expect("Failed to expand path")
@@ -70,7 +74,7 @@ fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
         return Ok(display);
     }
 
-    let branch = git_meta::get_current_branch(&path)?;
+    let branch = git_meta::get_current_branch(path)?;
     if let Some(branch) = branch {
         display = format!(
             "{}  {} {}",
@@ -83,9 +87,9 @@ fn get_display(path: &PathBuf) -> Result<String, DirItemError> {
     Ok(display)
 }
 
-fn get_readme(path: &PathBuf) -> Result<Option<PathBuf>, io::Error> {
+fn get_readme(path: &Path) -> Result<Option<PathBuf>, io::Error> {
     for glob_pattern in Settings::get_readonly().preview_files.iter() {
-        let mut preview_file_pattern = path.clone();
+        let mut preview_file_pattern = path.to_path_buf();
         preview_file_pattern.push(glob_pattern);
 
         let preview_file_pattern = preview_file_pattern
