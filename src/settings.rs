@@ -50,7 +50,7 @@ impl Settings {
         s.set_default("git_branch_separator", "■")?;
         s.set_default("colors.dir_name", "cyan")?;
         s.set_default("colors.git_branch", "red")?;
-        s.set_default("colors.bat_theme", "")?;
+        s.set_default("colors.bat_theme", "ansi")?;
 
         let home = home_dir();
         if home.is_none() {
@@ -107,5 +107,12 @@ impl Settings {
 }
 
 lazy_static! {
-    pub static ref SETTINGS: Mutex<Settings> = Mutex::from(Settings::new().unwrap());
+    pub static ref SETTINGS: Mutex<Settings> = {
+        let settings = Settings::new();
+        if let Err(e) = settings {
+            panic!("Failed to parse yml from configuration file: {}", e);
+        }
+
+        Mutex::from(settings.unwrap())
+    };
 }

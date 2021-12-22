@@ -1,6 +1,6 @@
 use crate::command_strs;
 use crate::dir_item::DirItem;
-use crate::settings::{Settings, SETTINGS};
+use crate::settings::Settings;
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
 use std::{borrow::Cow, sync::Arc};
@@ -15,8 +15,9 @@ impl SkimItem for DirItem {
     }
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
+        let settings = Settings::get_readonly();
         if self.readme.is_none() {
-            if Settings::get_readonly().preview_fallback_exa {
+            if settings.preview_fallback_exa {
                 return ItemPreview::Command(format!(
                     "{} \"{}\"",
                     command_strs::EXA.join(" "),
@@ -32,10 +33,13 @@ impl SkimItem for DirItem {
         }
 
         let readme_path = self.readme.as_ref().unwrap();
-        if SETTINGS.lock().unwrap().preview_with_bat {
+        if settings.preview_with_bat {
+            let mut bat_args = command_strs::BAT.to_vec();
+            let bat_theme_arg = format!("--theme={}", settings.colors.bat_theme);
+            bat_args.push(bat_theme_arg.as_str());
             ItemPreview::Command(format!(
                 "{} \"{}\"",
-                command_strs::BAT.join(" "),
+                bat_args.join(" "),
                 readme_path.to_str().unwrap().to_string()
             ))
         } else {

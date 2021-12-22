@@ -84,9 +84,11 @@ fn get_display(path: &Path) -> Result<String, DirItemError> {
         let color_settings = settings.colors;
         display = format!(
             "{}  {} {}",
-            parse_color(&color_settings.dir_name).paint(display),
-            parse_color(&color_settings.git_branch).paint(settings.git_branch_separator),
-            parse_color(&color_settings.git_branch).paint(branch),
+            parse_color(&color_settings.dir_name).bold().paint(display),
+            parse_color(&color_settings.git_branch)
+                .bold()
+                .paint(settings.git_branch_separator),
+            parse_color(&color_settings.git_branch).bold().paint(branch),
         );
     }
 

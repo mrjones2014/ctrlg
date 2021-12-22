@@ -90,6 +90,16 @@ show_git_branch: true
 # character to render between the directory name and git branch name
 # you can change this to a Nerd Font symbol if you like
 git_branch_separator: "■"
+# customize color scheme
+# see section on "customization" below for more details
+colors:
+  # directory name color
+  dir_name: "cyan"
+  # git branch color
+  git_branch: "red"
+  # name of theme to use for `bat`
+  # see: https://github.com/sharkdp/bat#highlighting-theme
+  bat_theme: "ansi"
 ```
 
 Any configuration values can be overridden by passing them as arguments to the CLI.
@@ -111,3 +121,23 @@ If no matching preview files are found, the directory listing is used as the pre
 default, directory contents are listed using [exa](https://github.com/ogham/exa) by default
 if `exa` is installed, otherwise contents are listed using `ls`. You can force using or not
 using `exa` as the fallback preview using the `preview_fallback_exa` option.
+
+### Customization
+
+Colors in the config file may be specified as a named color,
+a single integer corresponding to [xterm-256 color codes](https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg),
+or an RGB triple of integers (e.g. `255,255,255`). If an invalid color is specified
+(e.g. if you use decimals instead of integers, or an invalid named color), it will default to
+white. For `xterm-256` or RGB colors to work, it must be supported by your terminal emulator.
+I recommend [Kitty](https://sw.kovidgoyal.net/kitty/).
+
+Named colors are the following:
+
+- `"black"`
+- `"red"`
+- `"green"`
+- `"yellow"`
+- `"blue"`
+- `"purple"`
+- `"cyan"`
+- `"white`
