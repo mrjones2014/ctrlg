@@ -1,3 +1,4 @@
+use crate::command_strs;
 use crate::dir_item::DirItem;
 use crate::settings::{Settings, SETTINGS};
 use skim::prelude::*;
@@ -26,13 +27,15 @@ impl SkimItem for DirItem {
         if self.readme.is_none() {
             if Settings::get_readonly().preview_fallback_exa {
                 return ItemPreview::Command(format!(
-                    "exa --icons --color=always -s type -F \"{}\"",
+                    "{} \"{}\"",
+                    command_strs::EXA.join(" "),
                     self.path.to_str().unwrap().to_string()
                 ));
             }
 
             return ItemPreview::Command(format!(
-                "ls \"{}\"",
+                "{} \"{}\"",
+                command_strs::LS.join(" "),
                 self.path.to_str().unwrap().to_string()
             ));
         }
@@ -40,12 +43,14 @@ impl SkimItem for DirItem {
         let readme_path = self.readme.as_ref().unwrap();
         if SETTINGS.lock().unwrap().preview_with_bat {
             ItemPreview::Command(format!(
-                "bat --style=plain --color=always \"{}\"",
+                "{} \"{}\"",
+                command_strs::BAT.join(" "),
                 readme_path.to_str().unwrap().to_string()
             ))
         } else {
             ItemPreview::Command(format!(
-                "cat \"{}\"",
+                "{} \"{}\"",
+                command_strs::CAT.join(" "),
                 readme_path.to_str().unwrap().to_string()
             ))
         }

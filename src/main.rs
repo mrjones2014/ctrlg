@@ -4,6 +4,7 @@ use commands::CtrlgCommand;
 use std::error::Error;
 use structopt::{clap::AppSettings, StructOpt};
 
+mod command_strs;
 mod commands;
 mod dir_item;
 mod dirs;
