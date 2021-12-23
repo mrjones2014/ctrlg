@@ -20,7 +20,7 @@ cargo install ctrlg
 `cargo` can be installed via [rustup.rs](https://rustup.rs).
 
 Otherwise, you can install a pre-built binary from the [latest GitHub Release](https://github.com/mrjones2014/ctrlg/releases),
-rename the binary to `ctrlg`, and put it anywhere on your `$PATH`.
+rename the binary to `ctrlg`, make it executable via `chmod +x ctrlg`, then put it anywhere on your `$PATH`.
 
 ### Shell Plugin
 
