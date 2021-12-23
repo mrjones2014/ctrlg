@@ -135,4 +135,4 @@ Named colors are the following:
 - `"blue"`
 - `"purple"`
 - `"cyan"`
-- `"white`
+- `"white"`
