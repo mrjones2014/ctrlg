@@ -12,36 +12,41 @@ directories to search, see [configuration](#configuration).
 
 ## Install
 
-Make sure you have `cargo` installed. If not, install it from [rustup.rs](https://rustup.rs).
-Then install the `ctrlg` CLI by running:
-
-```sh
+If you have `cargo` installed, you can simply run:
+```
 cargo install ctrlg
 ```
+
+`cargo` can be installed via [rustup.rs](https://rustup.rs).
+
+Otherwise, you can install a pre-built binary from the [latest GitHub Release](https://github.com/mrjones2014/ctrlg/releases),
+rename the binary to `ctrlg`, and put it anywhere on your `$PATH`.
+
+### Shell Plugin
 
 Once the CLI is installed, you will need to set up the key binding depending on your shell.
 Alternatively, you can disable the default keybind by setting `$CTRLG_NOBIND` to `true`
 before running the init script, then set up your own keybind to call `_ctrlg_search_and_go`.
 
-### Fish
+#### Fish
 
 ```fish
 echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish
 ```
 
-### Zsh
+#### Zsh
 
 ```zsh
 echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc
 ```
 
-### Bash
+#### Bash
 
 ```bash
 echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ```
 
-## Tmux Integration
+### Tmux Integration
 
 To make `ctrlg` send the `cd` command to all split panes in the current `tmux`
 window, set the environment variable `CTRLG_TMUX` to `true`.
