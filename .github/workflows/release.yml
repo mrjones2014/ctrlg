@@ -15,7 +15,7 @@ jobs:
       - name: Check Formatting, Linting, and Tests
         run: make check
 
-  github-release:
+  build-assets:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -29,13 +29,41 @@ jobs:
       - name: Build Release Mac M1
         if: matrix.os == 'macos-latest'
         run: make build-mac-m1
+      - name: Upload MacOS M1 Artifact
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctrlg-macos-arm
+          path: ./release/ctrlg-macos-arm
+
       - name: Build Release Mac x86
         if: matrix.os == 'macos-latest'
         run: make build-mac-x86
+      - name: Upload MacOS x86 Artifact
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctrlg-macos-x86
+          path: ./release/ctrlg-macos-x86
+
       - name: Build Linux
         if: matrix.os == 'ubuntu-latest'
         run: make build-linux
+      - name: Upload Linux x86 Artifact
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: ctrlg-linux-x86
+          path: ./release/ctrlg-linux-x86
 
+  create-github-release:
+    runs-on: ubuntu-latest
+    needs: [build-assets]
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: release
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
@@ -43,9 +71,9 @@ jobs:
           fail_on_unmatched_files: true
           prerelease: ${{ contains(github.ref, '-') }}
           files: |
-            ./release/ctrlg-macos-arm
-            ./release/ctrlg-macos-x86
-            ./release/ctrlg-linux-x86
+            ./release/ctrlg-macos-arm/ctrlg-macos-arm
+            ./release/ctrlg-macos-x86/ctrlg-macos-x86
+            ./release/ctrlg-linux-x86/ctrlg-linux-x86
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
