@@ -72,9 +72,9 @@ jobs:
           fail_on_unmatched_files: true
           prerelease: ${{ contains(github.ref, '-') }}
           files: |
-            ./release/ctrlg-macos-arm/ctrlg-macos-arm
-            ./release/ctrlg-macos-x86/ctrlg-macos-x86
-            ./release/ctrlg-linux-x86/ctrlg-linux-x86
+            ./release/ctrlg-macos-arm
+            ./release/ctrlg-macos-x86
+            ./release/ctrlg-linux-x86
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

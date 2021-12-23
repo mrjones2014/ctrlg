@@ -1,7 +1,7 @@
 [package]
 name = "ctrlg"
 description = "A command line context switcher, written in Rust"
-version = "0.3.2"
+version = "0.3.3"
 edition = "2021"
 license = "MIT"
 documentation = "https://github.com/mrjones2014/ctrlg/blob/master/README.md"
