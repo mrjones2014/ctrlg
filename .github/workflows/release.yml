@@ -12,10 +12,42 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - uses: actions-rs/cargo@v1
+      - name: Check Formatting, Linting, and Tests
+        run: make check
+
+  github-release:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
         with:
-          command: clippy
-          args: -- -D warnings
+          toolchain: stable
+
+      - name: Build Release Mac M1
+        if: matrix.os == 'macos-latest'
+        run: make build-mac-m1
+      - name: Build Release Mac x86
+        if: matrix.os == 'macos-latest'
+        run: make build-mac-x86
+      - name: Build Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: make build-linux
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          prerelease: ${{ contains(github.ref, '-') }}
+          files: |
+            ./release/ctrlg-macos-arm
+            ./release/ctrlg-macos-x86
+            ./release/ctrlg-linux-x86
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   cargo-publish:
     runs-on: ubuntu-latest
