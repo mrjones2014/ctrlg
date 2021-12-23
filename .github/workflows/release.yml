@@ -12,10 +12,8 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+      - name: Check Formatting, Linting, and Tests
+        run: make check
 
   cargo-publish:
     runs-on: ubuntu-latest
