@@ -65,6 +65,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: release
+      - name: Make Assets Executable
+        run: |
+          chmod +x ./release/ctrlg-macos-arm/ctrlg-macos-arm
+          chmod +x ./release/ctrlg-macos-x86/ctrlg-macos-x86
+          chmod +x ./release/ctrlg-linux-x86/ctrlg-linux-x86
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
