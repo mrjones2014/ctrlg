@@ -38,15 +38,13 @@ fn is_program_in_path(program: &str) -> bool {
 
 fn user_config_paths() -> Vec<PathBuf> {
     let mut paths = Vec::new();
-    let home = home_dir();
-    let xdg_config_home = env::var("XDG_CONFIG_HOME");
     let mut base_paths = Vec::new();
 
-    if let Some(home) = home {
+    if let Some(home) = home_dir() {
         base_paths.push(home.to_str().expect("Failed to expand $HOME").to_string());
     }
 
-    if let Ok(xdg_config_home) = xdg_config_home {
+    if let Ok(xdg_config_home) = env::var("XDG_CONFIG_HOME") {
         base_paths.push(xdg_config_home);
     }
 
