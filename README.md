@@ -91,7 +91,7 @@ show_git_branch: true
 # you can change this to a Nerd Font symbol if you like
 git_branch_separator: "■"
 # customize color scheme
-# see section on "customization" below for more details
+# see section "Color Schemes" below for more details
 colors:
   # directory name color
   dir_name: "cyan"
@@ -101,11 +101,6 @@ colors:
   # see: https://github.com/sharkdp/bat#highlighting-theme
   bat_theme: "ansi"
 ```
-
-Any configuration values can be overridden by passing them as arguments to the CLI.
-When passing arguments to the CLI, replace `_` with `-`, e.g. `preview_with_bat`
-should be passed to the CLI as `--preview-with-bat`.
-See `ctrlg --help` and `ctrlg find --help`.
 
 ### Previews
 
@@ -122,7 +117,7 @@ default, directory contents are listed using [exa](https://github.com/ogham/exa)
 if `exa` is installed, otherwise contents are listed using `ls`. You can force using or not
 using `exa` as the fallback preview using the `preview_fallback_exa` option.
 
-### Customization
+### Color Schemes
 
 Colors in the config file may be specified as a named color,
 a single integer corresponding to [xterm-256 color codes](https://upload.wikimedia.org/wikipedia/commons/1/15/Xterm_256color_chart.svg),

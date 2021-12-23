@@ -6,24 +6,11 @@ use crate::{
     settings::Settings,
 };
 
-// the global settings object
-// gets these merged into it
-// at runtime
 #[derive(StructOpt)]
-pub struct Cmd {
-    #[structopt(long)]
-    pub search_dirs: Option<Vec<String>>,
-    #[structopt(long)]
-    pub preview_files: Option<Vec<String>>,
-    #[structopt(long)]
-    pub preview: Option<bool>,
-    #[structopt(long)]
-    pub preview_with_bat: Option<bool>,
-}
+pub struct Cmd {}
 
 impl Cmd {
     pub fn run(&self) -> Result<Option<String>, GetDirsError> {
-        Settings::merge_find_args(self);
         let dirs = get_dirs()?;
         if dirs.is_empty() {
             let search_dirs = Settings::get_readonly().search_dirs;
