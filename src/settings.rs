@@ -65,8 +65,6 @@ fn user_config_paths() -> Vec<PathBuf> {
         }
     }
 
-    println!("{:?}", paths);
-
     paths
 }
 
