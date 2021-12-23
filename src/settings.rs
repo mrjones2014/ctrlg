@@ -1,4 +1,3 @@
-use crate::commands::find;
 use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
 use serde::Deserialize;
@@ -37,6 +36,38 @@ fn is_program_in_path(program: &str) -> bool {
     false
 }
 
+fn user_config_paths() -> Vec<PathBuf> {
+    let mut paths = Vec::new();
+    let mut base_paths = Vec::new();
+
+    if let Some(home) = home_dir() {
+        let home_config_path = [
+            home.to_str().expect("Failed to expand $HOME"),
+            ".config",
+            "ctrlg",
+        ]
+        .iter()
+        .collect::<PathBuf>();
+        base_paths.push(home_config_path.to_str().unwrap().to_string());
+    }
+
+    if let Ok(xdg_config_home) = env::var("XDG_CONFIG_HOME") {
+        let xdg_config_home_path = [xdg_config_home, String::from("ctrlg")]
+            .iter()
+            .collect::<PathBuf>();
+        base_paths.push(xdg_config_home_path.to_str().unwrap().to_string());
+    }
+
+    for base_path in base_paths.iter() {
+        for config_file_name in CONFIG_FILE_NAMES.iter() {
+            let path = [base_path, *config_file_name].iter().collect::<PathBuf>();
+            paths.push(path);
+        }
+    }
+
+    paths
+}
+
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::default();
@@ -58,17 +89,7 @@ impl Settings {
         }
 
         // merge user config if it exists
-        let home = home.unwrap();
-        for config_file_name in CONFIG_FILE_NAMES.iter() {
-            let user_config_path: PathBuf = [
-                home.to_str().expect("Failed to determine config directory"),
-                ".config",
-                "ctrlg",
-                config_file_name,
-            ]
-            .iter()
-            .collect();
-
+        for user_config_path in user_config_paths().iter() {
             if user_config_path.exists() {
                 s.merge(File::with_name(user_config_path.to_str().unwrap()))?;
                 break;
@@ -76,26 +97,6 @@ impl Settings {
         }
 
         s.try_into()
-    }
-
-    pub fn merge_find_args(find_args: &find::Cmd) {
-        let mut settings_mut = SETTINGS.lock().unwrap();
-
-        if let Some(search_dirs) = &find_args.search_dirs {
-            settings_mut.search_dirs = search_dirs.clone();
-        }
-
-        if let Some(preview_files) = &find_args.preview_files {
-            settings_mut.preview_files = preview_files.clone();
-        }
-
-        if let Some(preview) = find_args.preview {
-            settings_mut.preview = preview;
-        }
-
-        if let Some(preview_with_bat) = find_args.preview_with_bat {
-            settings_mut.preview_with_bat = preview_with_bat;
-        }
     }
 
     pub fn get_readonly() -> Self {
