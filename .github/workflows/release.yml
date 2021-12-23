@@ -15,6 +15,59 @@ jobs:
       - name: Check Formatting, Linting, and Tests
         run: make check
 
+  publish-homebrew:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get version
+        id: get_version
+        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Build Release Mac M1
+        if: matrix.os == 'macos-latest'
+        run: make build-mac-m1
+      - name: Build Release Mac x86
+        if: matrix.os == 'macos-latest'
+        run: make build-mac-x86
+      - name: Build Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: make build-linux
+
+      - name: Set SHA
+        if: matrix.os == 'macos-latest'
+        id: shasum
+        run: |
+          echo ::set-output name=sha::"$(shasum -a 256 ./release/gitui-mac.tar.gz | awk '{printf $1}')"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: |
+            ./release/ctrlg-mac-m1.tar.gz
+            ./release/ctrlg-mac-x86.tar.gz
+            ./release/ctrlg-linux.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bump Homebrew Formula
+        uses: mislav/bump-homebrew-formula-action@v1
+        if: "matrix.os == 'macos-latest' && !contains(github.ref, '-')" # skip prereleases
+        env:
+          COMMITTER_TOKEN: ${{ secrets.BREW_TOKEN }}
+        with:
+          formula-name: ctrlg
+          homebrew-tap: mrjones2014/homebrew-tap
+
   cargo-publish:
     runs-on: ubuntu-latest
     steps:
