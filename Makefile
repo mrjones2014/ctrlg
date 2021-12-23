@@ -10,12 +10,14 @@ publish:
 
 .PHONY: build-mac-m1
 build-mac-m1:
+	rustup target add aarch64-apple-darwin
 	cargo build --release --target aarch64-apple-darwin
 	mkdir -p ./release/
 	cp ./target/aarch64-apple-darwin/release/ctrlg ./release/ctrlg-macos-arm
 
 .PHONY: build-mac-x86
 build-mac-x86:
+	rustup target add x86_64-apple-darwin
 	cargo build --release --target x86_64-apple-darwin
 	mkdir -p ./release/
 	cp ./target/x86_64-apple-darwin/release/ctrlg ./release/ctrlg-macos-x86
