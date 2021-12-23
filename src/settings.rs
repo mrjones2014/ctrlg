@@ -41,17 +41,31 @@ fn user_config_paths() -> Vec<PathBuf> {
     let mut base_paths = Vec::new();
 
     if let Some(home) = home_dir() {
-        base_paths.push(home.to_str().expect("Failed to expand $HOME").to_string());
+        let home_config_path = [
+            home.to_str().expect("Failed to expand $HOME"),
+            ".config",
+            "ctrlg",
+        ]
+        .iter()
+        .collect::<PathBuf>();
+        base_paths.push(home_config_path.to_str().unwrap().to_string());
     }
 
     if let Ok(xdg_config_home) = env::var("XDG_CONFIG_HOME") {
-        base_paths.push(xdg_config_home);
+        let xdg_config_home_path = [xdg_config_home, String::from("ctrlg")]
+            .iter()
+            .collect::<PathBuf>();
+        base_paths.push(xdg_config_home_path.to_str().unwrap().to_string());
     }
 
-    for (base_path, config_file_name) in base_paths.iter().zip(CONFIG_FILE_NAMES.iter()) {
-        let path = [base_path, *config_file_name].iter().collect::<PathBuf>();
-        paths.push(path);
+    for base_path in base_paths.iter() {
+        for config_file_name in CONFIG_FILE_NAMES.iter() {
+            let path = [base_path, *config_file_name].iter().collect::<PathBuf>();
+            paths.push(path);
+        }
     }
+
+    println!("{:?}", paths);
 
     paths
 }
