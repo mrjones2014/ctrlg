@@ -5,7 +5,7 @@ on:
       - 'v*'
 
 jobs:
-  lint-with-clippy:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,6 +16,7 @@ jobs:
         run: make check
 
   build-assets:
+    needs: [checks]
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -79,6 +80,7 @@ jobs:
 
   cargo-publish:
     runs-on: ubuntu-latest
+    needs: [checks]
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
