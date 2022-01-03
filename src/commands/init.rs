@@ -1,12 +1,13 @@
-use structopt::StructOpt;
+use clap::Subcommand;
 
-#[derive(StructOpt)]
+#[derive(Debug, Subcommand)]
+#[clap(about = "Set up ctrl+g keybind for specified shell")]
 pub enum Cmd {
-    #[structopt(about = "Set up ctrl+g keybind for Fish shell")]
+    #[clap(about = "Set up ctrl+g keybind for Fish shell")]
     Fish,
-    #[structopt(about = "Set up ctrl+g keybind for Bash")]
+    #[clap(about = "Set up ctrl+g keybind for Bash")]
     Bash,
-    #[structopt(about = "Set up ctrl+g keybind for Zsh")]
+    #[clap(about = "Set up ctrl+g keybind for Zsh")]
     Zsh,
 }
 

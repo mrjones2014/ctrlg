@@ -1,23 +1,22 @@
-use structopt::StructOpt;
-
 use crate::{
     dirs::{get_dirs, GetDirsError},
     finder::find,
     settings::Settings,
 };
+use clap::Args;
 
-#[derive(StructOpt)]
+#[derive(Debug, Args)]
 pub struct Cmd {}
 
 impl Cmd {
     pub fn run(&self) -> Result<Option<String>, GetDirsError> {
         let dirs = get_dirs()?;
         if dirs.is_empty() {
-            let search_dirs = Settings::get_readonly().search_dirs;
+            let search_dirs = Settings::global().search_dirs;
             let search_dirs_str = if search_dirs.is_empty() {
                 String::from("[Empty list]")
             } else {
-                Settings::get_readonly()
+                Settings::global()
                     .search_dirs
                     .iter()
                     .map(|dir_str| format!("- {}", dir_str))
