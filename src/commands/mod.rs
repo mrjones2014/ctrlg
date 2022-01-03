@@ -1,14 +1,15 @@
+use clap::{AppSettings, Subcommand};
 use std::error::Error;
-use structopt::StructOpt;
 
 pub mod find;
 pub mod init;
 
-#[derive(StructOpt)]
+#[derive(Debug, Subcommand)]
+#[clap(setting = AppSettings::DeriveDisplayOrder)]
 pub enum CtrlgCommand {
-    #[structopt(about = "Find a directory based on configured globbing patterns")]
+    #[clap(about = "Find a directory based on configured globbing patterns")]
     Find(find::Cmd),
-    #[structopt(about = "Set up ctrl+g keybind for specified shell")]
+    #[clap(subcommand)]
     Init(init::Cmd),
 }
 

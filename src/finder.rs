@@ -15,7 +15,7 @@ impl SkimItem for DirItem {
     }
 
     fn preview(&self, _context: PreviewContext) -> ItemPreview {
-        let settings = Settings::get_readonly();
+        let settings = Settings::global();
         if self.readme.is_none() {
             if settings.preview_fallback_exa {
                 return ItemPreview::Command(format!(
@@ -64,7 +64,7 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
 pub fn find(items: &[DirItem]) -> Option<String> {
     let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
-        .preview(if Settings::get_readonly().preview {
+        .preview(if Settings::global().preview {
             Some("")
         } else {
             None

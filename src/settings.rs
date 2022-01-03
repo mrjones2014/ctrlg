@@ -1,7 +1,8 @@
 use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
+use once_cell::sync::OnceCell;
 use serde::Deserialize;
-use std::{env, fs, path::PathBuf, sync::Mutex};
+use std::{env, fs, path::PathBuf};
 
 const CONFIG_FILE_NAMES: [&str; 2] = ["config.yml", "config.yaml"];
 
@@ -99,21 +100,16 @@ impl Settings {
         s.try_into()
     }
 
-    pub fn get_readonly() -> Self {
-        let settings_lock = SETTINGS.lock().unwrap();
-        let settings = settings_lock.clone();
-        drop(settings_lock);
-        settings
+    pub fn global() -> Self {
+        let settings = SETTINGS.get().expect("Settings not initialized.");
+        settings.to_owned()
+    }
+
+    pub fn init() -> Result<Self, ConfigError> {
+        let settings = Settings::new()?;
+        SETTINGS.set(settings.clone()).unwrap();
+        Ok(settings)
     }
 }
 
-lazy_static! {
-    pub static ref SETTINGS: Mutex<Settings> = {
-        let settings = Settings::new();
-        if let Err(e) = settings {
-            panic!("Failed to parse yml from configuration file: {}", e);
-        }
-
-        Mutex::from(settings.unwrap())
-    };
-}
+pub static SETTINGS: OnceCell<Settings> = OnceCell::new();

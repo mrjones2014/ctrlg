@@ -69,13 +69,13 @@ fn get_display(path: &Path) -> Result<String, DirItemError> {
         .unwrap()
         .to_string();
 
-    if !Settings::get_readonly().show_git_branch {
+    if !Settings::global().show_git_branch {
         return Ok(display);
     }
 
     let branch = git_meta::get_current_branch(path)?;
     if let Some(branch) = branch {
-        let settings = Settings::get_readonly();
+        let settings = Settings::global();
         let color_settings = settings.colors;
         display = format!(
             "{}  {} {}",
@@ -91,7 +91,7 @@ fn get_display(path: &Path) -> Result<String, DirItemError> {
 }
 
 fn get_readme(path: &Path) -> Result<Option<PathBuf>, io::Error> {
-    for glob_pattern in Settings::get_readonly().preview_files.iter() {
+    for glob_pattern in Settings::global().preview_files.iter() {
         let mut preview_file_pattern = path.to_path_buf();
         preview_file_pattern.push(glob_pattern);
 

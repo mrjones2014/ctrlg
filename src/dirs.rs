@@ -36,7 +36,7 @@ impl Display for GetDirsError {
 
 pub fn get_dirs() -> Result<Vec<DirItem>, GetDirsError> {
     let mut items = Vec::new();
-    for dir in Settings::get_readonly().search_dirs.iter() {
+    for dir in Settings::global().search_dirs.iter() {
         let dir = shellexpand::tilde(dir);
         for child in glob(&dir).expect("Failed to resolve globbing pattern") {
             let path = child?;

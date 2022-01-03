@@ -1,8 +1,7 @@
-#[macro_use]
-extern crate lazy_static;
+use clap::{AppSettings, Parser};
 use commands::CtrlgCommand;
+use settings::Settings;
 use std::error::Error;
-use structopt::{clap::AppSettings, StructOpt};
 
 mod colors;
 mod command_strs;
@@ -15,19 +14,16 @@ mod settings;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-#[derive(StructOpt)]
-#[structopt(
+#[derive(Debug, Parser)]
+#[clap(
     author = "Mat Jones <mat@mjones.network>",
     version = VERSION,
     about = "Press ctrl+g to search and jump to any directory",
-    global_settings(&[
-        AppSettings::UnifiedHelpMessage,
-        AppSettings::ColoredHelp,
-        AppSettings::DeriveDisplayOrder
-    ])
+    global_setting = AppSettings::PropagateVersion,
+    global_setting = AppSettings::DeriveDisplayOrder,
 )]
 struct Ctrlg {
-    #[structopt(subcommand)]
+    #[clap(subcommand)]
     ctrlg: CtrlgCommand,
 }
 
@@ -38,6 +34,7 @@ impl Ctrlg {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-    Ctrlg::from_args().run()?;
+    Settings::init()?;
+    Ctrlg::parse().run()?;
     Ok(())
 }
