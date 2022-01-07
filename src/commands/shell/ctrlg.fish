@@ -31,4 +31,7 @@ end
 
 if test -z "$CTRLG_NOBIND"
     bind \a _ctrlg_search_and_go
+    for mode in insert default normal
+        bind -M $mode \a _ctrlg_search_and_go
+    end
 end
