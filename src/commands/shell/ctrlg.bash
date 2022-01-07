@@ -20,14 +20,20 @@ function _ctrlg_tmux_send_all_panes {
 }
 
 function _ctrlg_search_and_go {
+  local ctrlg_output
+  ctrlg_output="$(ctrlg find)"
   local ctrlg_selected_dir
-  ctrlg_selected_dir="$(ctrlg find)"
+  ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
   if test -n "$ctrlg_selected_dir"; then
     if [ "$CTRLG_TMUX" = "true" ]; then
       _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && clear"
     else
       cd "$ctrlg_selected_dir" || exit
       clear
+    fi
+
+    if [[ "$ctrlg_output" = ctrlg_edit:* ]]; then
+      $EDITOR
     fi
   fi
 }
