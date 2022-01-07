@@ -69,6 +69,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
+        .bind(vec!["alt-enter:accept"])
         .multi(false)
         .build()
         .unwrap();
@@ -90,6 +91,16 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                 if out.final_key == Key::Enter {
                     return Some(selected.path.to_str().unwrap().to_string());
                 }
+
+                return match out.final_key {
+                    Key::Enter => Some(selected.path.to_str().unwrap().to_string()),
+                    Key::AltEnter => Some(format!(
+                        "{}:{}",
+                        "ctrlg_edit",
+                        selected.path.to_str().unwrap().to_string()
+                    )),
+                    _ => None,
+                };
             }
 
             None

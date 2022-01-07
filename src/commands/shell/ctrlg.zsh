@@ -19,7 +19,8 @@ function _ctrlg_tmux_send_all_panes() {
 }
 
 function _ctrlg_search_and_go() {
-  local ctrlg_selected_dir="$(ctrlg find)"
+  local ctrlg_output="$(ctrlg find)"
+  local ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
   if test -n "$ctrlg_selected_dir"; then
     if [ "$CTRLG_TMUX" = "true" ]; then
       _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && zle reset-prompt && clear"
@@ -27,6 +28,10 @@ function _ctrlg_search_and_go() {
       cd "$ctrlg_selected_dir" || exit
       zle reset-prompt
       clear
+    fi
+
+    if [[ "$ctrlg_output" = ctrlg_edit:* ]]; then
+      $EDITOR
     fi
   fi
 }

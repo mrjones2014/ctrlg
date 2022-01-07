@@ -13,6 +13,7 @@ directories to search, see [configuration](#configuration).
 ## Install
 
 If you have `cargo` installed, you can simply run:
+
 ```
 cargo install ctrlg
 ```
@@ -62,6 +63,13 @@ set CTRLG_TMUX true
 ```bash
 export CTRLG_TMUX=true
 ```
+
+### Key Bindings
+
+| Key Binding                              | Function                                                                                                                                                                |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <kbd>Enter</kbd>                         | `cd` to the selected directory                                                                                                                                          |
+| <kbd>Alt/Option</kbd> + <kbd>Enter</kbd> | `cd` to the selected directory, then open `$EDITOR` if defined. The `$EDITOR` command is only run in the currently active `tmux` pane, if using the `tmux` integration. |
 
 ## Configuration
 
