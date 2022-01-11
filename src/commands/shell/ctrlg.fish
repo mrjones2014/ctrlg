@@ -31,6 +31,8 @@ function _ctrlg_search_and_go
         if string match -q -- "ctrlg_edit:*" "$ctrlg_output" && test -n "$EDITOR"
             $EDITOR
         end
+    else
+        commandline -f repaint
     end
 end
 

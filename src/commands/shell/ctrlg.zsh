@@ -33,6 +33,8 @@ function _ctrlg_search_and_go() {
     if [[ "$ctrlg_output" = ctrlg_edit:* ]]; then
       $EDITOR
     fi
+  else
+    zle reset-prompt
   fi
 }
 
