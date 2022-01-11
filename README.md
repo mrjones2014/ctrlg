@@ -1,11 +1,12 @@
-# CtrlG - A Command Line Context Switcher
-
-CtrlG is a tool to quickly switch contexts to another directory, using a fuzzy finder.
-If enabled, `ctrlg` can `cd` all split panes in the current window of a `tmux` session
-to the selected directory. Press <kbd>ctrl</kbd> + <kbd>g</kbd> to fuzzy find directories,
-configured by globbing patterns.
+<h1 align="center">Ctrlg</h1>
+<h4 align="center">Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder</h4>
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
+
+Ctrlg is a tool to quickly switch contexts to another directory, using a fuzzy finder.
+If enabled (by setting `$CTRLG_TMUX` to `true`), `ctrlg` can `cd` all split panes in the current window of a `tmux` session
+to the selected directory. Press <kbd>ctrl</kbd> + <kbd>g</kbd> to fuzzy find directories,
+configured by globbing patterns.
 
 By default, only `~/git/*` is searched. To change this or add additional
 directories to search, see [configuration](#configuration).
