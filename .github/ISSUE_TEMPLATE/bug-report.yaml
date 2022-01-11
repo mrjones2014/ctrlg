@@ -21,13 +21,6 @@ body:
     validations:
       required: true
   - type: textarea
-    id: os-version
-    attributes:
-      label: Operating System + Version
-      description: If macOS, please specify if it's Apple ARM silicon
-    validations:
-      required: true
-  - type: textarea
     id: shell-version
     attributes:
       label: Shell + Version
