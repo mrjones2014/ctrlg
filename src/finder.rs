@@ -69,7 +69,13 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .bind(vec!["alt-enter:accept", "ctrl-o:accept", "tab:accept"])
+        .bind(vec![
+            "alt-enter:accept",
+            "ctrl-o:accept",
+            "tab:accept",
+            "ctrl-d:preview-up",
+            "ctrl-f:preview-down",
+        ])
         .multi(false)
         .build()
         .unwrap();
