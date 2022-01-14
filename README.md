@@ -69,7 +69,7 @@ export CTRLG_TMUX=true
 
 | Key Binding                              | Function                                                                                                                                                                   |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <kbd>Enter</kbd>                         | `cd` to the selected directory.                                                                                                                                            |
+| <kbd>Enter</kbd>                         | `cd` to the selected directory. If `$CTRLG_TMUX` is true, the `cd` command is sent to all split panes in the current window.                                               |
 | <kbd>Alt/Option</kbd> + <kbd>Enter</kbd> | `cd` to the selected directory, then open `$EDITOR` if defined. The `$EDITOR` command is only run in the currently active `tmux` pane, if using the `tmux` integration.    |
 | <kbd>Ctrl</kbd> + <kbd>o</kbd>           | `cd` to selected directory _only in current `tmux` pane_, do not send `cd` command to other `tmux` panes.                                                                  |
 | <kbd>Tab</kbd>                           | Insert the selected directory path to the command line, but do not execute anything. Works in Fish and zsh only, in bash, acts the same as <kbd>Ctrl</kbd> + <kbd>o</kbd>. |
