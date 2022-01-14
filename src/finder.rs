@@ -69,7 +69,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .bind(vec!["alt-enter:accept"])
+        .bind(vec!["alt-enter:accept", "ctrl-o:accept"])
         .multi(false)
         .build()
         .unwrap();
@@ -97,6 +97,11 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                     Key::AltEnter => Some(format!(
                         "{}:{}",
                         "ctrlg_edit",
+                        selected.path.to_str().unwrap().to_string()
+                    )),
+                    Key::Ctrl('o') => Some(format!(
+                        "{}:{}",
+                        "ctrlg_notmux",
                         selected.path.to_str().unwrap().to_string()
                     )),
                     _ => None,

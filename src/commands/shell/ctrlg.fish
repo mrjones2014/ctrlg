@@ -19,8 +19,9 @@ end
 function _ctrlg_search_and_go
     set -l ctrlg_output (ctrlg find)
     set -l ctrlg_selected_dir (string replace "ctrlg_edit:" "" "$ctrlg_output")
+    set -l ctrlg_selected_dir (string replace "ctrlg_notmux:" "" "$ctrlg_output")
     if test -n "$ctrlg_selected_dir"
-        if [ "$CTRLG_TMUX" = true ]
+        if [ "$CTRLG_TMUX" = true ] && ! string match -q -- "ctrlg_notmux:*" "$ctrlg_output" && test -n "$EDITOR"
             _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && commandline -f repaint && clear"
         else
             cd "$ctrlg_selected_dir"
