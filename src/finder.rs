@@ -1,6 +1,7 @@
 use crate::command_strs;
 use crate::dir_item::DirItem;
 use crate::settings::Settings;
+use copypasta::{ClipboardContext, ClipboardProvider};
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
 use std::{borrow::Cow, sync::Arc};
@@ -69,7 +70,12 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .bind(vec!["alt-enter:accept", "ctrl-o:accept", "tab:accept"])
+        .bind(vec![
+            "alt-enter:accept",
+            "ctrl-o:accept",
+            "tab:accept",
+            "ctrl-y:accept",
+        ])
         .multi(false)
         .build()
         .unwrap();
@@ -98,6 +104,14 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                     Key::AltEnter => Some(format!("ctrlg_edit:{}", path)),
                     Key::Ctrl('o') => Some(format!("ctrlg_notmux:{}", path)),
                     Key::Tab => Some(format!("ctrlg_insert:{}", path)),
+                    Key::Ctrl('y') => {
+                        let mut clipboard_context = ClipboardContext::new()
+                            .expect("Failed to initialize clipboard context.");
+                        clipboard_context
+                            .set_contents(path)
+                            .expect("Failed to copy to clipboard.");
+                        None
+                    }
                     _ => None,
                 };
             }
