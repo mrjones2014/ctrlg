@@ -67,11 +67,12 @@ export CTRLG_TMUX=true
 
 ### Key Bindings
 
-| Key Binding                              | Function                                                                                                                                                                |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <kbd>Enter</kbd>                         | `cd` to the selected directory                                                                                                                                          |
-| <kbd>Alt/Option</kbd> + <kbd>Enter</kbd> | `cd` to the selected directory, then open `$EDITOR` if defined. The `$EDITOR` command is only run in the currently active `tmux` pane, if using the `tmux` integration. |
-| <kbd>Ctrl</kbd> + <kbd>o</kbd>           | `cd` to selected directory *only in current `tmux` pane*, do not send `cd` command to other `tmux` panes
+| Key Binding                              | Function                                                                                                                                                                   |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <kbd>Enter</kbd>                         | `cd` to the selected directory.                                                                                                                                            |
+| <kbd>Alt/Option</kbd> + <kbd>Enter</kbd> | `cd` to the selected directory, then open `$EDITOR` if defined. The `$EDITOR` command is only run in the currently active `tmux` pane, if using the `tmux` integration.    |
+| <kbd>Ctrl</kbd> + <kbd>o</kbd>           | `cd` to selected directory *only in current `tmux` pane*, do not send `cd` command to other `tmux` panes.                                                                  |
+| <kbd>Tab</kbd>                           | Insert the selected directory path to the command line, but do not execute anything. Works in Fish and zsh only, in bash, acts the same as <kbd>Ctrl</kbd> + <kbd>o</kbd>. |
 
 ## Configuration
 

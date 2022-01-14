@@ -69,7 +69,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .bind(vec!["alt-enter:accept", "ctrl-o:accept"])
+        .bind(vec!["alt-enter:accept", "ctrl-o:accept", "tab:accept"])
         .multi(false)
         .build()
         .unwrap();
@@ -92,14 +92,12 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                     return Some(selected.path.to_str().unwrap().to_string());
                 }
 
+                let path = selected.path.to_str().unwrap().to_string();
                 return match out.final_key {
-                    Key::Enter => Some(selected.path.to_str().unwrap().to_string()),
-                    Key::AltEnter => {
-                        Some(format!("ctrlg_edit:{}", selected.path.to_str().unwrap()))
-                    }
-                    Key::Ctrl('o') => {
-                        Some(format!("ctrlg_notmux:{}", selected.path.to_str().unwrap()))
-                    }
+                    Key::Enter => Some(path),
+                    Key::AltEnter => Some(format!("ctrlg_edit:{}", path)),
+                    Key::Ctrl('o') => Some(format!("ctrlg_notmux:{}", path)),
+                    Key::Tab => Some(format!("ctrlg_insert:{}", path)),
                     _ => None,
                 };
             }
