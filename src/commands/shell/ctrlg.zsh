@@ -22,7 +22,8 @@ function _ctrlg_search_and_go() {
   local ctrlg_output="$(ctrlg find)"
   local ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
   ctrlg_selected_dir=${ctrlg_output/"ctrlg_notmux:"/}
-  if test -n "$ctrlg_selected_dir"; then
+  ctrlg_selected_dir=${ctrlg_output/"ctrlg_insert:"/}
+  if test -n "$ctrlg_selected_dir" && [[ "$ctrlg_output" != ctrlg_insert:* ]]; then
     if [ "$CTRLG_TMUX" = "true" ] && [[ "$ctrlg_output" != ctrlg_notmux:* ]]; then
       _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && zle reset-prompt && clear"
     else
@@ -31,12 +32,14 @@ function _ctrlg_search_and_go() {
       clear
     fi
 
-    if [[ "$ctrlg_output" = ctrlg_edit:* ]]; then
+    if [[ "$ctrlg_output" = ctrlg_edit:* ]] && [[ "$EDITOR" != "" ]]; then
       $EDITOR
     fi
-  else
-    zle reset-prompt
+  elif [[ "$ctrlg_output" = ctrlg_insert:* ]]; then
+    LBUFFER="$ctrlg_selected_dir"
   fi
+
+  zle reset-prompt
 }
 
 zle -N _ctrlg_search_and_go
