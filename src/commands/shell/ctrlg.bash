@@ -24,8 +24,9 @@ function _ctrlg_search_and_go {
   ctrlg_output="$(ctrlg find)"
   local ctrlg_selected_dir
   ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
+  ctrlg_selected_dir=${ctrlg_selected_dir/"ctrlg_notmux:"/}
   if test -n "$ctrlg_selected_dir"; then
-    if [ "$CTRLG_TMUX" = "true" ]; then
+    if [ "$CTRLG_TMUX" = "true" ] && [[ "$ctrlg_output" != ctrlg_notmux:* ]]; then
       _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && clear"
     else
       cd "$ctrlg_selected_dir" || exit
