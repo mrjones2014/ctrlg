@@ -21,14 +21,14 @@ impl SkimItem for DirItem {
                 return ItemPreview::Command(format!(
                     "{} \"{}\"",
                     command_strs::EXA.join(" "),
-                    self.path.to_str().unwrap().to_string()
+                    self.path.to_str().unwrap()
                 ));
             }
 
             return ItemPreview::Command(format!(
                 "{} \"{}\"",
                 command_strs::LS.join(" "),
-                self.path.to_str().unwrap().to_string()
+                self.path.to_str().unwrap()
             ));
         }
 
@@ -40,13 +40,13 @@ impl SkimItem for DirItem {
             ItemPreview::Command(format!(
                 "{} \"{}\"",
                 bat_args.join(" "),
-                readme_path.to_str().unwrap().to_string()
+                readme_path.to_str().unwrap()
             ))
         } else {
             ItemPreview::Command(format!(
                 "{} \"{}\"",
                 command_strs::CAT.join(" "),
-                readme_path.to_str().unwrap().to_string()
+                readme_path.to_str().unwrap()
             ))
         }
     }
@@ -69,7 +69,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .bind(vec!["alt-enter:accept"])
+        .bind(vec!["alt-enter:accept", "ctrl-o:accept"])
         .multi(false)
         .build()
         .unwrap();
@@ -94,11 +94,12 @@ pub fn find(items: &[DirItem]) -> Option<String> {
 
                 return match out.final_key {
                     Key::Enter => Some(selected.path.to_str().unwrap().to_string()),
-                    Key::AltEnter => Some(format!(
-                        "{}:{}",
-                        "ctrlg_edit",
-                        selected.path.to_str().unwrap().to_string()
-                    )),
+                    Key::AltEnter => {
+                        Some(format!("ctrlg_edit:{}", selected.path.to_str().unwrap()))
+                    }
+                    Key::Ctrl('o') => {
+                        Some(format!("ctrlg_notmux:{}", selected.path.to_str().unwrap()))
+                    }
                     _ => None,
                 };
             }
