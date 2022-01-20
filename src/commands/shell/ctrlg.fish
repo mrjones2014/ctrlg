@@ -16,8 +16,26 @@ function _ctrlg_tmux_send_all_panes
     end
 end
 
+function _ctrlg_popup
+    if [ "$CTRLG_TMUX_POPUP" = true ]
+        set -l fifo (set -q TMPDIR && echo "$TMPDIR" || echo "/tmp/")
+        set -l fifo "$fifo/_ctrlg_fifo"
+        rm -f "$fifo"
+        mkfifo "$fifo"
+        if [ "$CTRLG_TMUX_POPUP_ARGS" = "" ]
+            tmux popup -E -w 75% -h 75% "ctrlg find > $fifo" &
+        else
+            tmux popup -E $CTRLG_TMUX_POPUP_ARGS "ctrlg find > $fifo" &
+        end
+        cat "$fifo"
+        rm -rf "$fifo"
+    else
+        ctrlg find
+    end
+end
+
 function _ctrlg_search_and_go
-    set -l ctrlg_output (ctrlg find)
+    set -l ctrlg_output (_ctrlg_popup)
     set -l ctrlg_selected_dir (string replace "ctrlg_edit:" "" "$ctrlg_output")
     set -l ctrlg_selected_dir (string replace "ctrlg_notmux:" "" "$ctrlg_output")
     set -l ctrlg_selected_dir (string replace "ctrlg_insert:" "" "$ctrlg_output")

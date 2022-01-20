@@ -18,8 +18,22 @@ function _ctrlg_tmux_send_all_panes() {
   fi
 }
 
+function _ctrlg_popup() {
+  if [ "$CTRLG_TMUX_POPUP" = "true" ]; then
+    fifo="${TMPDIR:-/tmp/}/_ctrlg_fifo"
+    rm -f "$fifo"
+    mkfifo "$fifo"
+    popup_args="${CTRLG_TMUX_POPUP_ARGS:-"-w 75\% -h 75\%"}"
+    tmux popup -E $popup_args "ctrlg find > $fifo" &
+    cat "$fifo"
+    rm -f "$fifo"
+  else
+    ctrlg find
+  fi
+}
+
 function _ctrlg_search_and_go() {
-  local ctrlg_output="$(ctrlg find)"
+  local ctrlg_output="$(_ctrlg_popup)"
   local ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
   ctrlg_selected_dir=${ctrlg_output/"ctrlg_notmux:"/}
   ctrlg_selected_dir=${ctrlg_output/"ctrlg_insert:"/}
