@@ -51,18 +51,27 @@ echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ### Tmux Integration
 
 To make `ctrlg` send the `cd` command to all split panes in the current `tmux`
-window, set the environment variable `CTRLG_TMUX` to `true`.
+window, set the environment variable `CTRLG_TMUX` to `true`. You can also make the fuzzy finder
+appear in a `tmux` floating window, and specify the window size, with `$CTRLG_TMUX_POPUP` and
+`$CTRLG_TMUX_POPUP_ARGS`, respectively. `$CTRLG_TMUX_POPUP_ARGS` can be any window positioning
+or sizing arguments accepted by `tmux popup`. `$CTRLG_TMUX_POPUP_ARGS` defaults to `-w 75% -h 75%`.
 
 ### Fish
 
 ```fish
 set CTRLG_TMUX true
+set CTRLG_TMUX_POPUP true
+# IMPORTANT: quote each argument separately so that the variable is an array
+set CTRLG_TMUX_POPUP_ARGS "-w" "75%" "-h" "75%"
 ```
 
 ### Bash or Zsh
 
 ```bash
 export CTRLG_TMUX=true
+export CTRLG_TMUX_POPUP=true
+# for bash and zsh, quote all arguments together
+export CTRLG_TMUX_POPUP_ARGS="-w 75% -h 75%"
 ```
 
 ### Key Bindings
