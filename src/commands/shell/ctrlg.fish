@@ -17,7 +17,7 @@ function _ctrlg_tmux_send_all_panes
 end
 
 function _ctrlg_popup
-    if [ "$CTRLG_TMUX_POPUP" = true ]
+    if [ "$CTRLG_TMUX_POPUP" = true ] && [ "$TMUX" != "" ]
         set -l fifo (set -q TMPDIR && echo "$TMPDIR" || echo "/tmp/")
         set -l fifo "$fifo/_ctrlg_fifo"
         rm -f "$fifo"
