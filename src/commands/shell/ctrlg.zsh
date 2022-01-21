@@ -19,7 +19,7 @@ function _ctrlg_tmux_send_all_panes() {
 }
 
 function _ctrlg_popup() {
-  if [ "$CTRLG_TMUX_POPUP" = "true" ]; then
+  if [ "$CTRLG_TMUX_POPUP" = "true" ] && [ "$TMUX" != "" ]; then
     fifo="${TMPDIR:-/tmp/}/_ctrlg_fifo"
     rm -f "$fifo"
     mkfifo "$fifo"
