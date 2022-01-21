@@ -2,6 +2,7 @@
 <h4 align="center">Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder</h4>
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
+<sup>Demo is using the [tmux integration](#tmux-integration) for floating window and [lighthaus](https://github.com/mrjones2014/lighthaus.nvim) terminal theme.</sup>
 
 Ctrlg is a tool to quickly switch contexts to another directory, using a fuzzy finder.
 If enabled (by setting `$CTRLG_TMUX` to `true`), `ctrlg` can `cd` all split panes in the current window of a `tmux` session
