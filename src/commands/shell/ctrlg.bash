@@ -25,6 +25,8 @@ function _ctrlg_popup {
     rm -f "$fifo"
     mkfifo "$fifo"
     popup_args="${CTRLG_TMUX_POPUP_ARGS:-"-w 75\% -h 75\%"}"
+    # we are intentionally not quoting here to preserve word splitting for args
+    # shellcheck disable=SC2086
     tmux popup -E $popup_args "ctrlg find > $fifo" &
     cat "$fifo"
     rm -f "$fifo"
@@ -47,15 +49,15 @@ function _ctrlg_search_and_go {
   fi
 
   if [[ "$ctrlg_output" = ctrlg_insert:* ]]; then
-    cd "$ctrlg_selected_dir"
+    cd "$ctrlg_selected_dir" || return
   elif [[ "$ctrlg_output" = ctrlg_pushd:* ]]; then
     if test -z "$EDITOR"; then
       echo "\$EDITOR is not defined."
       return
     fi
-    pushd "$ctrlg_selected_dir" && $EDITOR && popd
+    pushd "$ctrlg_selected_dir" && $EDITOR && popd || return
   elif [[ "$ctrlg_output" = ctrlg_notmux:* ]]; then
-    cd "$ctrlg_selected_dir"
+    cd "$ctrlg_selected_dir" || return
   else
     _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && clear"
     if [[ "$ctrlg_output" = ctrlg_edit:* ]]; then

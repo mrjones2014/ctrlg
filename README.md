@@ -1,4 +1,5 @@
 <h1 align="center">Ctrlg</h1>
+</h1>
 <h4 align="center">Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder</h4>
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
@@ -118,6 +119,7 @@ preview_fallback_exa: [true if `exa` is installed, false otherwise]
 show_git_branch: true
 # character to render between the directory name and git branch name
 # you can change this to a Nerd Font symbol if you like
+# such as git branch symbol: 
 git_branch_separator: "■"
 # customize color scheme
 # see section "Color Schemes" below for more details
