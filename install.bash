@@ -60,7 +60,7 @@ __ctrlg_install_from_cargo() {
     while true; do
       read -r -p "Do you want to install 'rustup' to install 'cargo'? (Y/n)  " yn
       case $yn in
-      [Yy]*) __ctrlg_install_rustup_then_ctrlg ;;
+      [Yy]*) __ctrlg_install_rustup_then_ctrlg && return ;;
       [Nn]*) echo "Aborting..." && exit ;;
       *) echo "Please answer yes or no." ;;
       esac
@@ -75,7 +75,7 @@ __ctrlg_install_unsupported() {
   while true; do
     read -r -p "Unsupported OS detected. Do you wish to attempt an install via 'cargo'? (Y/n)  " yn
     case $yn in
-    [Yy]*) __ctrlg_install_from_cargo ;;
+    [Yy]*) __ctrlg_install_from_cargo && return ;;
     [Nn]*) echo "Aborting..." && exit ;;
     *) echo "Please answer yes or no." ;;
     esac
@@ -128,7 +128,7 @@ EOF
 while true; do
   read -r -p "Do you wish to install 'ctrlg'? (Y/n)  " yn
   case $yn in
-  [Yy]*) __ctrlg_install ;;
+  [Yy]*) __ctrlg_install && exit ;;
   [Nn]*) echo "Aborting..." && exit ;;
   *) echo "Please answer yes or no." ;;
   esac
