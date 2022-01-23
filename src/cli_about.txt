@@ -1,0 +1,11 @@
+A command line context-switcher, written in Rust
+Please file an issue if you run into any problems!
+https://github.com/mrjones2014/ctrlg
+
+╭─────────╮ ╭──────────────╮ ╭──────────╮ ╭────╮      ╭─────────╮
+│         │ │              │ │     ╭╮   │ │    │      │         │
+│    ╭────╯ ╰────╮    ╭────╯ │     ╰╯   │ │    │      │    ╭────╯
+│    │           │    │      │         ╭╯ │    │      │    │─────╮
+│    ╰────╮      │    │      │   ╭──╮  ╰╮ │    ╰────╮ │    ╰───  │
+│         │      │    │      │   │  │   │ │         │ │          │
+╰─────────╯      ╰────╯      ╰───╯  ╰───╯ ╰─────────╯ ╰──────────╯
