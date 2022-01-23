@@ -1,4 +1,5 @@
 <h1 align="center">Ctrlg</h1>
+</h1>
 <h4 align="center">Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder</h4>
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
@@ -14,7 +15,7 @@ directories to search, see [configuration](#configuration).
 
 ## Install
 
-If you have `cargo` installed, you can simply run:
+### With Cargo
 
 ```
 cargo install ctrlg
@@ -22,34 +23,55 @@ cargo install ctrlg
 
 `cargo` can be installed via [rustup.rs](https://rustup.rs).
 
-Otherwise, you can install a pre-built binary from the [latest GitHub Release](https://github.com/mrjones2014/ctrlg/releases),
-rename the binary to `ctrlg`, make it executable via `chmod +x ctrlg`, then put it anywhere on your `$PATH`.
+### With Installer Script
 
-### Shell Plugin
+Do not run as root or with `sudo`, the script will ask for `sudo` if needed.
+```
+bash <(curl https://raw.githubusercontent.com/mrjones2014/ctrlg/master/install.bash)
+```
+
+### Manual
+
+1. Download the appropriate binary for your system from the [latest GitHub Release](https://github.com/mrjones2014/ctrlg/releases)
+1. Rename the binary `ctrlg`
+1. Make the binary executable via `chmod +x ctrlg`
+1. Put the binary anywhere on your `$PATH`, such as `/usr/local/bin/ctrlg`
+
+### Build and Install from Source
+
+Requires `cargo`:
+
+```
+git clone git@github.com:mrjones2014/ctrlg.git
+cd ctrlg
+cargo install --path .
+```
+
+## Shell Plugin
 
 Once the CLI is installed, you will need to set up the key binding depending on your shell.
 Alternatively, you can disable the default keybind by setting `$CTRLG_NOBIND` to `true`
 before running the init script, then set up your own keybind to call `_ctrlg_search_and_go`.
 
-#### Fish
+### Fish
 
 ```fish
 echo 'ctrlg init fish | source' >> ~/.config/fish/config.fish
 ```
 
-#### Zsh
+### Zsh
 
 ```zsh
 echo 'eval "$(ctrlg init zsh)"' >> ~/.zshrc
 ```
 
-#### Bash
+### Bash
 
 ```bash
 echo 'eval "$(ctrlg init bash)"' >> ~/.bashrc
 ```
 
-### Tmux Integration
+## Tmux Integration
 
 To make `ctrlg` send the `cd` command to all split panes in the current `tmux`
 window, set the environment variable `CTRLG_TMUX` to `true`. You can also make the fuzzy finder
@@ -75,7 +97,7 @@ export CTRLG_TMUX_POPUP=true
 export CTRLG_TMUX_POPUP_ARGS="-w 75% -h 75%"
 ```
 
-### Key Bindings
+## Key Bindings
 
 | Key Binding                              | Function                                                                                                                                                                   |
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,6 +140,7 @@ preview_fallback_exa: [true if `exa` is installed, false otherwise]
 show_git_branch: true
 # character to render between the directory name and git branch name
 # you can change this to a Nerd Font symbol if you like
+# such as git branch symbol: 
 git_branch_separator: "■"
 # customize color scheme
 # see section "Color Schemes" below for more details

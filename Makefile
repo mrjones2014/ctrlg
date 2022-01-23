@@ -1,6 +1,6 @@
 .PHONY: install
 install:
-	cargo install --path . --offline
+	cargo install --path .
 
 .PHONY: publish
 publish:

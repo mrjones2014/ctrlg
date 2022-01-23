@@ -12,13 +12,11 @@ mod finder;
 mod git_meta;
 mod settings;
 
-const VERSION: &str = env!("CARGO_PKG_VERSION");
-
 #[derive(Debug, Parser)]
 #[clap(
     author = "Mat Jones <mat@mjones.network>",
-    version = VERSION,
-    about = "Press ctrl+g to search and jump to any directory",
+    version = env!("CARGO_PKG_VERSION"),
+    about = include_str!("./cli_about.txt"),
     global_setting = AppSettings::PropagateVersion,
     global_setting = AppSettings::DeriveDisplayOrder,
 )]
