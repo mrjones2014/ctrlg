@@ -27,7 +27,7 @@ cargo install ctrlg
 
 Do not run as root or with `sudo`, the script will ask for `sudo` if needed.
 ```
-bash <(curl https://raw.githubusercontent.com/mrjones2014/ctrlg/master/install.bash)
+bash -c 'bash <(curl --proto "=https" --tlsv1.2 -sSf https://raw.githubusercontent.com/mrjones2014/ctrlg/master/install.bash)'
 ```
 
 ### Manual
