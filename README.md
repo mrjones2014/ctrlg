@@ -81,6 +81,7 @@ export CTRLG_TMUX_POPUP_ARGS="-w 75% -h 75%"
 | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | <kbd>Enter</kbd>                         | `cd` to the selected directory. If `$CTRLG_TMUX` is `true`, the `cd` command is sent to all split panes in the current window.                                             |
 | <kbd>Alt/Option</kbd> + <kbd>Enter</kbd> | `cd` to the selected directory, then open `$EDITOR` if defined. The `$EDITOR` command is only run in the currently active `tmux` pane, if using the `tmux` integration.    |
+| <kbd>Alt/Option</kbd> + <kbd>o</kbd>     | Open `$EDITOR` to selected directory without `cd`ing the shell.                                                                                                            |
 | <kbd>Ctrl</kbd> + <kbd>o</kbd>           | `cd` to selected directory _only in current `tmux` pane_, do not send `cd` command to other `tmux` panes.                                                                  |
 | <kbd>Tab</kbd>                           | Insert the selected directory path to the command line, but do not execute anything. Works in Fish and zsh only, in bash, acts the same as <kbd>Ctrl</kbd> + <kbd>o</kbd>. |
 | <kbd>Ctrl</kbd> + <kbd>d</kbd>           | Scroll preview up.                                                                                                                                                         |

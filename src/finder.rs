@@ -71,6 +71,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         })
         .bind(vec![
             "alt-enter:accept",
+            "alt-o:accept",
             "ctrl-o:accept",
             "tab:accept",
             "ctrl-d:preview-up",
@@ -103,6 +104,7 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                     Key::Enter => Some(path),
                     Key::AltEnter => Some(format!("ctrlg_edit:{}", path)),
                     Key::Ctrl('o') => Some(format!("ctrlg_notmux:{}", path)),
+                    Key::Alt('o') => Some(format!("ctrlg_pushd:{}", path)),
                     Key::Tab => Some(format!("ctrlg_insert:{}", path)),
                     _ => None,
                 };

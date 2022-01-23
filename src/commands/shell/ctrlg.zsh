@@ -4,7 +4,7 @@
 # having to toggle on and off the
 # synchronize-panes option manually
 function _ctrlg_tmux_send_all_panes() {
-  if test -z "$TMUX"; then
+  if test -z "$TMUX" || test -z "$CTRLG_TMUX"; then
     eval "$1"
   else
     local current_pane="$(tmux display-message -p '#P')"
@@ -33,24 +33,39 @@ function _ctrlg_popup() {
 }
 
 function _ctrlg_search_and_go() {
-  local ctrlg_output="$(_ctrlg_popup)"
-  local ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
-  ctrlg_selected_dir=${ctrlg_output/"ctrlg_notmux:"/}
-  ctrlg_selected_dir=${ctrlg_output/"ctrlg_insert:"/}
-  if test -n "$ctrlg_selected_dir" && [[ "$ctrlg_output" != ctrlg_insert:* ]]; then
-    if [ "$CTRLG_TMUX" = "true" ] && [[ "$ctrlg_output" != ctrlg_notmux:* ]]; then
-      _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && zle reset-prompt && clear"
-    else
-      cd "$ctrlg_selected_dir" || exit
-      zle reset-prompt
-      clear
-    fi
+  local ctrlg_output
+  ctrlg_output="$(_ctrlg_popup)"
+  local ctrlg_selected_dir
+  ctrlg_selected_dir=${ctrlg_output/"ctrlg_edit:"/}
+  ctrlg_selected_dir=${ctrlg_selected_dir/"ctrlg_notmux:"/}
+  ctrlg_selected_dir=${ctrlg_selected_dir/"ctrlg_insert:"/}
+  ctrlg_selected_dir=${ctrlg_selected_dir/"ctrlg_pushd:"/}
 
-    if [[ "$ctrlg_output" = ctrlg_edit:* ]] && [[ "$EDITOR" != "" ]]; then
+  if test -z "$ctrlg_selected_dir"; then
+    return
+  fi
+
+  if [[ "$ctrlg_output" = ctrlg_insert:* ]]; then
+    LBUFFER="$ctrlg_selected_dir"
+  elif [[ "$ctrlg_output" = ctrlg_pushd:* ]]; then
+    if test -z "$EDITOR"; then
+      echo "\$EDITOR is not defined."
+      zle reset-prompt
+      return
+    fi
+    pushd "$ctrlg_selected_dir" && $EDITOR && popd
+  elif [[ "$ctrlg_output" = ctrlg_notmux:* ]]; then
+    cd "$ctrlg_selected_dir"
+  else
+    _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && clear"
+    if [[ "$ctrlg_output" = ctrlg_edit:* ]]; then
+      if test -z "$EDITOR"; then
+        echo "\$EDITOR is not defined."
+        zle reset-prompt
+        return
+      fi
       $EDITOR
     fi
-  elif [[ "$ctrlg_output" = ctrlg_insert:* ]]; then
-    LBUFFER="$ctrlg_selected_dir"
   fi
 
   zle reset-prompt
