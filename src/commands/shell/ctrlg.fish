@@ -2,7 +2,7 @@
 # having to toggle on and off the
 # synchronize-panes option manually
 function _ctrlg_tmux_send_all_panes
-    if test -z "$TMUX"
+    if test -z "$TMUX" || test -z "$CTRLG_TMUX"
         eval "$argv"
     else
         set -l current_pane (tmux display-message -p '#P')
@@ -37,22 +37,33 @@ end
 function _ctrlg_search_and_go
     set -l ctrlg_output (_ctrlg_popup)
     set -l ctrlg_selected_dir (string replace "ctrlg_edit:" "" "$ctrlg_output")
-    set -l ctrlg_selected_dir (string replace "ctrlg_notmux:" "" "$ctrlg_output")
-    set -l ctrlg_selected_dir (string replace "ctrlg_insert:" "" "$ctrlg_output")
-    if test -n "$ctrlg_selected_dir" && ! string match -q -- "ctrlg_insert:*" "$ctrlg_output"
-        if [ "$CTRLG_TMUX" = true ] && ! string match -q -- "ctrlg_notmux:*" "$ctrlg_output"
-            _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && commandline -f repaint && clear"
-        else
-            cd "$ctrlg_selected_dir"
-            commandline -f repaint
-            clear
-        end
+    set -l ctrlg_selected_dir (string replace "ctrlg_notmux:" "" "$ctrlg_selected_dir")
+    set -l ctrlg_selected_dir (string replace "ctrlg_insert:" "" "$ctrlg_selected_dir")
+    set -l ctrlg_selected_dir (string replace "ctrlg_pushd:" "" "$ctrlg_selected_dir")
+    echo "$ctrlg_selected_dir"
 
-        if string match -q -- "ctrlg_edit:*" "$ctrlg_output" && test -n "$EDITOR"
+    if test -z "$ctrlg_selected_dir"
+        commandline -f repaint
+        return
+    end
+
+    if string match -q -- "ctrlg_insert:*" "$ctrlg_output"
+        commandline -r "$ctrlg_selected_dir"
+    else if string match -q -- "ctrlg_pushd:*" "$ctrlg_output"
+        if test -z "$EDITOR"
+            echo "\$EDITOR is not defined."
+            commandline -f repaint
+            return
+        end
+        pushd "$ctrlg_selected_dir" && $EDITOR && popd
+    else if string match -q -- "ctrlg_notmux:*" "$ctrlg_output"
+        cd "$ctrlg_selected_dir"
+        clear
+    else
+        _ctrlg_tmux_send_all_panes "cd $ctrlg_selected_dir && commandline -f repaint && clear"
+        if string match -q -- "ctrlg_edit:*" "$ctrlg_output"
             $EDITOR
         end
-    else if string match -q -- "ctrlg_insert:*" "$ctrlg_output"
-        commandline -r "$ctrlg_selected_dir"
     end
 
     commandline -f repaint
