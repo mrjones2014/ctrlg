@@ -39,9 +39,15 @@ pub fn get_dirs() -> Result<Vec<DirItem>, GetDirsError> {
     for dir in Settings::global().search_dirs.iter() {
         let dir = shellexpand::tilde(dir);
         for child in glob(&dir).expect("Failed to resolve globbing pattern") {
-            let path = child?;
+            let mut path = child?;
             if path.is_dir() {
                 items.push(DirItem::new(path)?);
+            } else if !&dir.ends_with('*') {
+                // globbing pattern is to a file like `~/git/**/package.json`
+                path.pop();
+                if path.is_dir() {
+                    items.push(DirItem::new(path)?);
+                }
             }
         }
     }
