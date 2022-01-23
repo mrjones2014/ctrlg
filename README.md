@@ -17,7 +17,7 @@ directories to search, see [configuration](#configuration).
 
 ### With Cargo
 
-```
+```sh
 cargo install ctrlg
 ```
 
@@ -26,7 +26,7 @@ cargo install ctrlg
 ### With Installer Script
 
 Do not run as root or with `sudo`, the script will ask for `sudo` if needed.
-```
+```sh
 bash -c 'bash <(curl --proto "=https" --tlsv1.2 -sSf https://raw.githubusercontent.com/mrjones2014/ctrlg/master/install.bash)'
 ```
 
@@ -41,7 +41,7 @@ bash -c 'bash <(curl --proto "=https" --tlsv1.2 -sSf https://raw.githubuserconte
 
 Requires `cargo`:
 
-```
+```sh
 git clone git@github.com:mrjones2014/ctrlg.git
 cd ctrlg
 cargo install --path .
