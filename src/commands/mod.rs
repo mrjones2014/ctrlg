@@ -1,6 +1,7 @@
 use clap::{AppSettings, Subcommand};
 use std::error::Error;
 
+pub mod check_updates;
 pub mod find;
 pub mod init;
 
@@ -11,6 +12,7 @@ pub enum CtrlgCommand {
     Find(find::Cmd),
     #[clap(subcommand)]
     Init(init::Cmd),
+    CheckUpdates(check_updates::Cmd),
 }
 
 impl CtrlgCommand {
@@ -26,6 +28,11 @@ impl CtrlgCommand {
             CtrlgCommand::Init(cmd) => {
                 let script = cmd.run();
                 println!("{}", script);
+                Ok(())
+            }
+            CtrlgCommand::CheckUpdates(cmd) => {
+                let instructions = cmd.run()?;
+                println!("{}", instructions);
                 Ok(())
             }
         }

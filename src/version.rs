@@ -1,4 +1,4 @@
-use std::num::ParseIntError;
+use std::{error::Error, fmt::Display, num::ParseIntError};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Version {
@@ -13,9 +13,24 @@ pub enum ParseVersionError {
     FailedToParseVersionInt(ParseIntError),
 }
 
+impl Error for ParseVersionError {}
+
 impl From<ParseIntError> for ParseVersionError {
     fn from(e: ParseIntError) -> Self {
         ParseVersionError::FailedToParseVersionInt(e)
+    }
+}
+
+impl Display for ParseVersionError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ParseVersionError::IncorrectNumberOfVersionSegments(num_segments) => {
+                writeln!(f, "Expected 3 segments, got {}", num_segments)
+            }
+            ParseVersionError::FailedToParseVersionInt(e) => {
+                writeln!(f, "Failed to parse version segment to int: {}", e)
+            }
+        }
     }
 }
 
@@ -49,6 +64,12 @@ impl TryFrom<&str> for Version {
 
     fn try_from(version_str: &str) -> Result<Self, Self::Error> {
         try_version_from_str(version_str)
+    }
+}
+
+impl Display for Version {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}.{}.{}", self.major, self.minor, self.patch)
     }
 }
 

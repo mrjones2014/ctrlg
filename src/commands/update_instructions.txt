@@ -1,0 +1,17 @@
+╭─────────╮ ╭──────────────╮ ╭──────────╮ ╭────╮      ╭─────────╮
+│         │ │              │ │     ╭╮   │ │    │      │         │
+│    ╭────╯ ╰────╮    ╭────╯ │     ╰╯   │ │    │      │    ╭────╯
+│    │           │    │      │         ╭╯ │    │      │    │─────╮
+│    ╰────╮      │    │      │   ╭──╮  ╰╮ │    ╰────╮ │    ╰───  │
+│         │      │    │      │   │  │   │ │         │ │          │
+╰─────────╯      ╰────╯      ╰───╯  ╰───╯ ╰─────────╯ ╰──────────╯
+
+To update with 'cargo':
+
+cargo install ctrlg
+
+To update with the installer script:
+
+bash -c 'bash <(curl --proto "=https" --tlsv1.2 -sSf https://raw.githubusercontent.com/mrjones2014/ctrlg/master/install.bash)'
+
+To update manually: https://github.com/mrjones2014/ctrlg#manual
