@@ -11,6 +11,7 @@ mod dirs;
 mod finder;
 mod git_meta;
 mod settings;
+mod version;
 
 #[derive(Debug, Parser)]
 #[clap(
