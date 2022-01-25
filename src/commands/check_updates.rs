@@ -27,8 +27,9 @@ impl Cmd {
         }
 
         let instructions = format!(
-            "A new version ({}) is available!\n\n{}",
+            "A new version ({}) is available!\n\n{}\n\n{}",
             latest_version,
+            include_str!("./ascii_logo.txt"),
             include_str!("./update_instructions.txt")
         );
         Ok(instructions)
