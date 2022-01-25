@@ -4,6 +4,7 @@ use std::error::Error;
 pub mod check_updates;
 pub mod find;
 pub mod init;
+mod keybinds;
 
 #[derive(Debug, Subcommand)]
 #[clap(setting = AppSettings::DeriveDisplayOrder)]
@@ -12,7 +13,10 @@ pub enum CtrlgCommand {
     Find(find::Cmd),
     #[clap(subcommand)]
     Init(init::Cmd),
+    #[clap(about = "Check if updates are available for ctrlg")]
     CheckUpdates(check_updates::Cmd),
+    #[clap(about = "Print the key bindings used for the fuzzy finder")]
+    Keybinds(keybinds::Cmd),
 }
 
 impl CtrlgCommand {
@@ -33,6 +37,11 @@ impl CtrlgCommand {
             CtrlgCommand::CheckUpdates(cmd) => {
                 let instructions = cmd.run()?;
                 println!("{}", instructions);
+                Ok(())
+            }
+            CtrlgCommand::Keybinds(cmd) => {
+                let keybinds_table = cmd.run().unwrap();
+                println!("{}", keybinds_table);
                 Ok(())
             }
         }

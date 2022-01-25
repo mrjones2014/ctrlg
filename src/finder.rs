@@ -1,5 +1,6 @@
 use crate::command_strs;
 use crate::dir_item::DirItem;
+use crate::keybind::{get_bound_keys, CtrlgKeybind};
 use crate::settings::Settings;
 use skim::prelude::*;
 use skim::{prelude::unbounded, SkimItem, SkimItemReceiver, SkimItemSender};
@@ -62,6 +63,11 @@ fn receiver(items: &[DirItem]) -> SkimItemReceiver {
 }
 
 pub fn find(items: &[DirItem]) -> Option<String> {
+    let keybinds = get_bound_keys();
+    let keybind_strs = keybinds
+        .iter()
+        .map(|key| key.binding_string())
+        .collect::<Vec<String>>();
     let skim_options = SkimOptionsBuilder::default()
         .height(Some("100%"))
         .preview(if Settings::global().preview {
@@ -69,14 +75,12 @@ pub fn find(items: &[DirItem]) -> Option<String> {
         } else {
             None
         })
-        .bind(vec![
-            "alt-enter:accept",
-            "alt-o:accept",
-            "ctrl-o:accept",
-            "tab:accept",
-            "ctrl-d:preview-up",
-            "ctrl-f:preview-down",
-        ])
+        .bind(
+            keybind_strs
+                .iter()
+                .map(String::as_str)
+                .collect::<Vec<&str>>(),
+        )
         .multi(false)
         .build()
         .unwrap();
@@ -100,14 +104,10 @@ pub fn find(items: &[DirItem]) -> Option<String> {
                 }
 
                 let path = selected.path.to_str().unwrap().to_string();
-                return match out.final_key {
-                    Key::Enter => Some(path),
-                    Key::AltEnter => Some(format!("ctrlg_edit:{}", path)),
-                    Key::Ctrl('o') => Some(format!("ctrlg_notmux:{}", path)),
-                    Key::Alt('o') => Some(format!("ctrlg_pushd:{}", path)),
-                    Key::Tab => Some(format!("ctrlg_insert:{}", path)),
-                    _ => None,
-                };
+                let prefix = out.final_key.result_prefix();
+                return prefix
+                    .map(|prefix| Some(format!("{}{}", prefix, path)))
+                    .flatten();
             }
 
             None

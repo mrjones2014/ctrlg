@@ -10,6 +10,7 @@ mod dir_item;
 mod dirs;
 mod finder;
 mod git_meta;
+mod keybind;
 mod settings;
 mod version;
 
