@@ -1,5 +1,4 @@
 <h1 align="center">Ctrlg</h1>
-</h1>
 <h4 align="center">Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder</h4>
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
