@@ -23,7 +23,6 @@ pub struct Settings {
     pub show_git_branch: bool,
     pub git_branch_separator: String,
     pub colors: ColorSettings,
-    pub include: Vec<String>,
 }
 
 fn is_program_in_path(program: &str) -> bool {
@@ -70,50 +69,6 @@ fn user_config_paths() -> Vec<PathBuf> {
     paths
 }
 
-fn normalize_path_if_exists(path: String) -> Option<String> {
-    let file_path = shellexpand::tilde(&path).to_string();
-    if PathBuf::from(&file_path).is_file() {
-        return Some(file_path);
-    }
-
-    None
-}
-
-// custom merge so that we combine Vecs instead of replacing them
-fn merge_include(config: &mut Config, included: &Config) -> Result<(), ConfigError> {
-    let mut search_dirs = config.get_array("search_dirs").unwrap_or_default();
-    let mut included_seach_dirs = included.get_array("search_dirs").unwrap_or_default();
-    included_seach_dirs.append(&mut search_dirs);
-    config.set("search_dirs", included_seach_dirs)?;
-
-    let mut preview_files = config.get_array("preview_files").unwrap_or_default();
-    let mut included_preview_files = included.get_array("preview_files").unwrap_or_default();
-    included_preview_files.append(&mut preview_files);
-    config.set("preview_files", included_preview_files)?;
-
-    if let Ok(preview) = included.get_bool("preview") {
-        config.set("preview", preview)?;
-    }
-
-    if let Ok(preview_with_bat) = included.get_bool("preview_with_bat") {
-        config.set("preview_with_bat", preview_with_bat)?;
-    }
-
-    if let Ok(preview_fallback_exa) = included.get_bool("preview_fallback_exa") {
-        config.set("preview_fallback_exa", preview_fallback_exa)?;
-    }
-
-    if let Ok(show_git_branch) = included.get_bool("show_git_branch") {
-        config.set("show_git_branch", show_git_branch)?;
-    }
-
-    if let Ok(colors) = included.get_table("colors") {
-        config.set("colors", colors)?;
-    }
-
-    Ok(())
-}
-
 impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::default();
@@ -128,7 +83,6 @@ impl Settings {
         s.set_default("colors.dir_name", "cyan")?;
         s.set_default("colors.git_branch", "247,78,39")?; // git brand orange color
         s.set_default("colors.bat_theme", "ansi")?;
-        s.set_default("include", Vec::<String>::new())?;
 
         let home = home_dir();
         if home.is_none() {
@@ -140,17 +94,6 @@ impl Settings {
             if user_config_path.exists() {
                 s.merge(File::with_name(user_config_path.to_str().unwrap()))?;
                 break;
-            }
-        }
-
-        let includes = s.get_array("include")?;
-        for include_path in includes.iter() {
-            let path_str = include_path.clone().into_str()?.to_string();
-            let normalized = normalize_path_if_exists(path_str);
-            if let Some(normalized) = normalized {
-                let mut included_config = Config::default();
-                included_config.merge(File::with_name(&normalized))?;
-                merge_include(&mut s, &included_config)?;
             }
         }
 

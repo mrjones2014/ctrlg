@@ -115,11 +115,6 @@ export CTRLG_TMUX_POPUP_ARGS="-w 75% -h 75%"
 configuration is shown below:
 
 ```yaml
-# include other configuration files into this configuration file,
-# does not seach recursively (e.g. you cannot `include` file from
-# an already `include`d file). The `include` key is a yaml list
-# of file paths to include
-include: []
 # configure what directories to list in the fuzzy finder
 # can be any list of globbing patterns, will only show directories
 # not files
@@ -134,12 +129,12 @@ previews: true
 # force using or not using `bat` for previews
 # this represents the default but in an actual
 # config file, this should just be `true` or `false`
-preview_with_bat: (true if `bat` is installed, false otherwise)
+preview_with_bat: [true if `bat` is installed, false otherwise]
 # force using or not using `exa` for preview fallback when no
 # matching `preview_files` are found
 # this represents the default but in an actual
 # config file, this should just be `true` or `false`
-preview_fallback_exa: (true if `exa` is installed, false otherwise)
+preview_fallback_exa: [true if `exa` is installed, false otherwise]
 # enable or disable showing git branch for directories
 # which are git repositories
 show_git_branch: true
