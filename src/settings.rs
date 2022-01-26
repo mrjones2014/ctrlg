@@ -97,6 +97,14 @@ fn merge_include(config: &mut Config, included: &Config) -> Result<(), ConfigErr
         config.set("preview", preview)?;
     }
 
+    if let Ok(preview_with_glow) = included.get_bool("preview_with_glow") {
+        config.set("preview_with_glow", preview_with_glow)?;
+    }
+
+    if let Ok(glow_wrap_width) = included.get_str("glow_wrap_width") {
+        config.set("glow_wrap_width", glow_wrap_width)?;
+    }
+
     if let Ok(preview_with_bat) = included.get_bool("preview_with_bat") {
         config.set("preview_with_bat", preview_with_bat)?;
     }
