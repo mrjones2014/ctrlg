@@ -1,5 +1,6 @@
-<h1 align="center">Ctrlg</h1>
-<h4 align="center">Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder</h4>
+# ctrlg ⌨️
+
+###### Press <kbd>ctrl</kbd> + <kbd>g</kbd> to jump between projects using a fuzzy finder
 
 ![demo](https://github.com/mrjones2014/ctrlg/raw/master/demo.gif)
 <sup>Demo is using the [tmux integration](#tmux-integration) for floating window and [lighthaus](https://github.com/mrjones2014/lighthaus.nvim) terminal theme.</sup>
@@ -130,10 +131,17 @@ preview_files:
   - "README.*"
 # enable or disable the preview window
 previews: true
+# force using or not using `glow` for previews
+# this setting takes precedence over `preview_with_bat`
+# this represents the default but in an actual
+# config file, this should just be `true` or `false`
+preview_with_glow: (true if `glow` is installed, false otherwise)
+# set the line-wrap width passed to `glow` via `glow -w`
+glow_wrap_width: 80
 # force using or not using `bat` for previews
 # this represents the default but in an actual
 # config file, this should just be `true` or `false`
-preview_with_bat: (true if `bat` is installed, false otherwise)
+preview_with_bat: (true if `bat` is installed and `glow` is NOT installed, false otherwise)
 # force using or not using `exa` for preview fallback when no
 # matching `preview_files` are found
 # this represents the default but in an actual

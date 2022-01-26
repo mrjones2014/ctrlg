@@ -34,7 +34,16 @@ impl SkimItem for DirItem {
         }
 
         let readme_path = self.readme.as_ref().unwrap();
-        if settings.preview_with_bat {
+        if settings.preview_with_glow {
+            let mut glow_args = command_strs::GLOW.to_vec();
+            let wrap_width_str = settings.glow_wrap_width.to_string();
+            glow_args.push(&wrap_width_str);
+            ItemPreview::Command(format!(
+                "{} \"{}\"",
+                glow_args.join(" "),
+                readme_path.to_str().unwrap()
+            ))
+        } else if settings.preview_with_bat {
             let mut bat_args = command_strs::BAT.to_vec();
             let bat_theme_arg = format!("--theme={}", settings.colors.bat_theme);
             bat_args.push(bat_theme_arg.as_str());
