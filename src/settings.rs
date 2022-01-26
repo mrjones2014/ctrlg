@@ -19,6 +19,8 @@ pub struct Settings {
     pub preview_files: Vec<String>,
     pub preview: bool,
     pub preview_with_bat: bool,
+    pub preview_with_glow: bool,
+    pub glow_wrap_width: usize,
     pub preview_fallback_exa: bool,
     pub show_git_branch: bool,
     pub git_branch_separator: String,
@@ -118,11 +120,17 @@ impl Settings {
     pub fn new() -> Result<Self, ConfigError> {
         let mut s = Config::default();
 
+        let glow_installed = is_program_in_path("glow");
+        let bat_installed = is_program_in_path("bat");
+        let exa_installed = is_program_in_path("exa");
+
         s.set_default("search_dirs", vec!["~/git/*"])?;
         s.set_default("preview_files", vec!["README.*"])?;
         s.set_default("preview", true)?;
-        s.set_default("preview_with_bat", is_program_in_path("bat"))?;
-        s.set_default("preview_fallback_exa", is_program_in_path("exa"))?;
+        s.set_default("preview_with_glow", glow_installed)?;
+        s.set_default("glow_wrap_width", 80)?;
+        s.set_default("preview_with_bat", !glow_installed && bat_installed)?;
+        s.set_default("preview_fallback_exa", exa_installed)?;
         s.set_default("show_git_branch", true)?;
         s.set_default("git_branch_separator", "■")?;
         s.set_default("colors.dir_name", "cyan")?;
