@@ -116,7 +116,7 @@ configuration is shown below:
 
 ```yaml
 # include other configuration files into this configuration file,
-# does not seach recursively (e.g. you cannot `include` file from
+# does not search recursively (e.g. you cannot `include` file from
 # an already `include`d file). The `include` key is a yaml list
 # of file paths to include
 include: []
