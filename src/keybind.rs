@@ -63,11 +63,11 @@ impl CtrlgKeybind for Key {
         // to avoid breaking in the middle of a word for the
         // 'ctrlg keybinds' subcommand output
         match self {
-            Key::Enter => "'cd' to the selected directory. Sends command to  all tmux panes if $CTRLG_TMUX is 'true'.",
+            Key::Enter => "'cd' to the selected directory. Sends command to all tmux panes if $CTRLG_TMUX is 'true'.",
             Key::AltEnter => "'cd' to the selected directory (in all tmux panes if $CTRLG_TMUX is 'true'), then open $EDITOR (only in current tmux pane).",
-            Key::Alt('o') => "Open $EDITOR to the specified directory without   changing the shell working directory.",
+            Key::Alt('o') => "Open $EDITOR to the specified directory without changing the shell working directory.",
             Key::Ctrl('o') => "'cd' to the selected directory in the current tmux pane only.",
-            Key::Tab => "Insert the selected directory path to the command line, but do not execute anything. Works in Fish  and zsh only, in bash, acts the same as ctrl-o.",
+            Key::Tab => "Insert the selected directory path to the command line, but do not execute anything. Works in Fish and zsh only, in bash, acts the same as ctrl-o.",
             Key::Ctrl('d') => "Scroll preview up.",
             Key::Ctrl('f') => "Scroll preview down.",
             _ => unimplemented!("Unused keybind matched"),
