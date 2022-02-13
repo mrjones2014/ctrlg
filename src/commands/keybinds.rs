@@ -31,9 +31,9 @@ impl Cmd {
             "{}\n\n{}",
             include_str!("./ascii_logo.txt"),
             Table::new(keybinds)
-                .with(Style::PSEUDO)
+                .with(Style::modern())
                 .with(Modify::new(Full).with(Alignment::left()))
-                .with(Modify::new(Row(1..)).with(MaxWidth::wrapping(50)))
+                .with(Modify::new(Row(1..)).with(MaxWidth::wrapping(50).keep_words()))
         ))
     }
 }
