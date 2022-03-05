@@ -1,3 +1,4 @@
+use arboard::Clipboard;
 use skim::prelude::Key;
 
 pub trait CtrlgKeybind {
@@ -14,9 +15,21 @@ pub trait CtrlgKeybind {
     fn result_prefix(&self) -> Option<&str>;
     /// Get the human-readable description of what the keybind does.
     fn description(&self) -> &str;
+    /// Perform any other actions that may need to be done for a keybind.
+    fn handle(&self, selected_item: String);
 }
 
 impl CtrlgKeybind for Key {
+    fn handle(&self, selected_item: String) {
+        if let Key::Ctrl('y') = self {
+            let mut clipboard = Clipboard::new().unwrap();
+            let clipboard_result = clipboard.set_text(selected_item);
+            if clipboard_result.is_err() {
+                eprintln!("Failed to copy to clipboard.")
+            }
+        }
+    }
+
     fn key_code(&self) -> &str {
         match self {
             Key::Enter => "enter",
@@ -25,6 +38,7 @@ impl CtrlgKeybind for Key {
             Key::Ctrl('o') => "ctrl-o",
             Key::Ctrl('d') => "ctrl-d",
             Key::Ctrl('f') => "ctrl-f",
+            Key::Ctrl('y') => "ctrl-y",
             Key::Tab => "tab",
             _ => unimplemented!("Unused keybind matched"),
         }
@@ -36,6 +50,7 @@ impl CtrlgKeybind for Key {
             Key::AltEnter => "accept",
             Key::Alt('o') => "accept",
             Key::Ctrl('o') => "accept",
+            Key::Ctrl('y') => "accept",
             Key::Ctrl('d') => "preview-up",
             Key::Ctrl('f') => "preview-down",
             Key::Tab => "accept",
@@ -67,6 +82,7 @@ impl CtrlgKeybind for Key {
             Key::AltEnter => "'cd' to the selected directory (in all tmux panes if $CTRLG_TMUX is 'true'), then open $EDITOR (only in current tmux pane).",
             Key::Alt('o') => "Open $EDITOR to the specified directory without changing the shell working directory.",
             Key::Ctrl('o') => "'cd' to the selected directory in the current tmux pane only.",
+            Key::Ctrl('y') => "Copy selected path to clipboard and exit.",
             Key::Tab => "Insert the selected directory path to the command line, but do not execute anything. Works in Fish and zsh only, in bash, acts the same as ctrl-o.",
             Key::Ctrl('d') => "Scroll preview up.",
             Key::Ctrl('f') => "Scroll preview down.",
@@ -75,7 +91,7 @@ impl CtrlgKeybind for Key {
     }
 }
 
-pub fn get_bound_keys() -> [Key; 7] {
+pub fn get_bound_keys() -> [Key; 8] {
     [
         Key::Enter,
         Key::AltEnter,
@@ -84,5 +100,6 @@ pub fn get_bound_keys() -> [Key; 7] {
         Key::Tab,
         Key::Ctrl('d'),
         Key::Ctrl('f'),
+        Key::Ctrl('y'),
     ]
 }

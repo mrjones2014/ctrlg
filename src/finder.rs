@@ -108,13 +108,11 @@ pub fn find(items: &[DirItem]) -> Option<String> {
             };
 
             if let Some(selected) = selected {
-                if out.final_key == Key::Enter {
-                    return Some(selected.path.to_str().unwrap().to_string());
-                }
-
+                let final_key = out.final_key;
                 let path = selected.path.to_str().unwrap().to_string();
-                let prefix = out.final_key.result_prefix();
-                return prefix
+                final_key.handle(path.clone());
+                return final_key
+                    .result_prefix()
                     .map(|prefix| Some(format!("{}{}", prefix, path)))
                     .flatten();
             }

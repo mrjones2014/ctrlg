@@ -19,7 +19,6 @@ mod version;
     author = "Mat Jones <mat@mjones.network>",
     version = env!("CARGO_PKG_VERSION"),
     about = include_str!("./cli_about.txt"),
-    global_setting = AppSettings::PropagateVersion,
     global_setting = AppSettings::DeriveDisplayOrder,
 )]
 struct Ctrlg {
