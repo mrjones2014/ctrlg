@@ -96,30 +96,25 @@ pub fn find(items: &[DirItem]) -> Option<String> {
 
     let items = receiver(items);
 
-    Skim::run_with(&skim_options, Some(items))
-        .map(|out| {
-            let selected = out.selected_items.first();
-            let selected = match selected {
-                Some(item) => {
-                    let selected_dir = (**item).as_any().downcast_ref::<DirItem>().unwrap();
-                    Some(selected_dir)
-                }
-                None => None,
-            };
-
-            if let Some(selected) = selected {
-                if out.final_key == Key::Enter {
-                    return Some(selected.path.to_str().unwrap().to_string());
-                }
-
-                let path = selected.path.to_str().unwrap().to_string();
-                let prefix = out.final_key.result_prefix();
-                return prefix
-                    .map(|prefix| Some(format!("{}{}", prefix, path)))
-                    .flatten();
+    Skim::run_with(&skim_options, Some(items)).and_then(|out| {
+        let selected = out.selected_items.first();
+        let selected = match selected {
+            Some(item) => {
+                let selected_dir = (**item).as_any().downcast_ref::<DirItem>().unwrap();
+                Some(selected_dir)
             }
+            None => None,
+        };
 
-            None
-        })
-        .flatten()
+        if let Some(selected) = selected {
+            let final_key = out.final_key;
+            let path = selected.path.to_str().unwrap().to_string();
+            final_key.handle(path.clone());
+            return final_key
+                .result_prefix()
+                .map(|prefix| format!("{}{}", prefix, path));
+        }
+
+        None
+    })
 }

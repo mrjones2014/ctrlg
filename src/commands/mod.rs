@@ -7,7 +7,7 @@ pub mod init;
 mod keybinds;
 
 #[derive(Debug, Subcommand)]
-#[clap(setting = AppSettings::DeriveDisplayOrder)]
+#[clap(setting = AppSettings::DeriveDisplayOrder, propagate_version = true)]
 pub enum CtrlgCommand {
     #[clap(about = "Find a directory based on configured globbing patterns")]
     Find(find::Cmd),
