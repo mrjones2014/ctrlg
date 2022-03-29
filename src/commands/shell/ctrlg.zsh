@@ -15,6 +15,11 @@ function _ctrlg_tmux_send_all_panes() {
         tmux send-keys -t "$pane" "  $1" Enter
       fi
     done
+    if [[ $(type -t _ctrlg_get_related_panes) == function ]]; then
+      for pane in $(_ctrlg_get_related_panes); do
+        tmux send-keys -t "$pane" "  $1" Enter
+      done
+    fi
   fi
 }
 

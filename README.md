@@ -26,6 +26,7 @@ cargo install ctrlg
 ### With Installer Script
 
 Do not run as root or with `sudo`, the script will ask for `sudo` if needed.
+
 ```sh
 bash -c 'bash <(curl --proto "=https" --tlsv1.2 -sSf https://raw.githubusercontent.com/mrjones2014/ctrlg/master/install.bash)'
 ```
@@ -78,6 +79,10 @@ window, set the environment variable `CTRLG_TMUX` to `true`. You can also make t
 appear in a `tmux` floating window, and specify the window size, with `$CTRLG_TMUX_POPUP` and
 `$CTRLG_TMUX_POPUP_ARGS`, respectively. `$CTRLG_TMUX_POPUP_ARGS` can be any window positioning
 or sizing arguments accepted by `tmux popup`. `$CTRLG_TMUX_POPUP_ARGS` defaults to `-w 75% -h 75%`.
+
+You can also define a hook function to send the `cd` command to additional `tmux` panes not in the
+current window. The function must return a list of `tmux` pane IDs. The hook function is
+`_ctrlg_get_related_panes`.
 
 ### Fish
 

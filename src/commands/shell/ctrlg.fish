@@ -13,6 +13,11 @@ function _ctrlg_tmux_send_all_panes
                 tmux send-keys -t "$pane" "  $argv" Enter
             end
         end
+        if type _ctrlg_get_related_panes >/dev/null
+            for pane in (_ctrlg_get_related_panes || "")
+                tmux send-keys -t "$pane" "  $argv" Enter
+            end
+        end
     end
 end
 
