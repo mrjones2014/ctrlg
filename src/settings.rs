@@ -2,7 +2,7 @@ use config::{Config, ConfigError, File};
 use dirs_next::home_dir;
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
-use std::{env, fs, path::PathBuf};
+use std::{env, fs, io, path::PathBuf};
 
 const CONFIG_FILE_NAMES: [&str; 2] = ["config.yml", "config.yaml"];
 
@@ -178,10 +178,18 @@ impl Settings {
         settings.to_owned()
     }
 
+    pub fn update(settings: Settings) {
+        SETTINGS.set(settings).expect("Failed to update settings.");
+    }
+
     pub fn init() -> Result<Self, ConfigError> {
         let settings = Settings::new()?;
         SETTINGS.set(settings.clone()).unwrap();
         Ok(settings)
+    }
+
+    pub fn write(&self) -> Result<Self, io::Error> {
+        let settings_str = &self.
     }
 }
 

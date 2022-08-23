@@ -1,6 +1,7 @@
 use clap::{AppSettings, Subcommand};
 use std::error::Error;
 
+mod add;
 pub mod check_updates;
 pub mod find;
 pub mod init;

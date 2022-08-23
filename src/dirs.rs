@@ -3,12 +3,13 @@ use crate::{
     settings::Settings,
 };
 use glob::{glob, GlobError};
-use std::{error::Error, fmt::Display};
+use std::{error::Error, fmt::Display, io};
 
 #[derive(Debug)]
 pub enum GetDirsError {
     DirItemError(DirItemError),
     GlobError(GlobError),
+    IoError(io::Error),
 }
 
 impl Error for GetDirsError {}
@@ -25,11 +26,18 @@ impl From<GlobError> for GetDirsError {
     }
 }
 
+impl From<io::Error> for GetDirsError {
+    fn from(e: io::Error) -> Self {
+        GetDirsError::IoError(e)
+    }
+}
+
 impl Display for GetDirsError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             GetDirsError::DirItemError(e) => writeln!(f, "Error parsing directory metadata: {}", e),
             GetDirsError::GlobError(e) => writeln!(f, "Error expanding globbing pattern: {}", e),
+            GetDirsError::IoError(e) => writeln!(f, "I/O error: {}", e),
         }
     }
 }
